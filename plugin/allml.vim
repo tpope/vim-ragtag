@@ -1,5 +1,5 @@
 " allml.vim - useful XML/HTML mappings
-" Author:       Tim Pope <vimNOSPAM@tpope.info>
+" Author:       Tim Pope <vimNOSPAM@tpope.org>
 " GetLatestVimScripts: 1896 1 :AutoInstall: allml.vim
 " $Id$
 
