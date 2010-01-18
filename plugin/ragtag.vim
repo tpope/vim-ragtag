@@ -122,12 +122,9 @@ endfunction
 
 function! s:Init()
   let b:loaded_ragtag = 1
-  "inoremap <silent> <buffer> <SID>dtmenu  <C-R>=<SID>htmlEn()<CR><Lt>!DOCTYPE<C-X><C-O><C-R>=<SID>htmlDis()<CR><C-P>
   inoremap <silent> <buffer> <SID>xmlversion  <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
   inoremap      <buffer> <SID>htmltrans   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-  "inoremap      <buffer> <SID>htmlstrict  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
   inoremap      <buffer> <SID>xhtmltrans  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  "inoremap      <buffer> <SID>xhtmlstrict <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   if s:subtype() == "xml"
     imap <script> <buffer> <SID>doctype <SID>xmlversion
   elseif exists("+omnifunc")
@@ -139,17 +136,13 @@ function! s:Init()
   endif
   imap <script> <buffer> <C-X>! <SID>doctype
 
-  "imap <buffer> <C-X>& <SID>doctype<C-O>ohtml<C-X><CR>head<C-X><CR><C-X>#<Esc>otitle<C-X><Space><C-R>=expand('%:t:r')<CR><Esc>jobody<C-X><CR><Esc>cc
   imap <silent> <buffer> <C-X># <meta http-equiv="Content-Type" content="text/html; charset=<C-R>=<SID>charset()<CR>"<C-R>=<SID>closetag()<CR>
-  "map! <buffer> <SID>Thl html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
-  "map! <buffer> <C-X>h <Thl><CR></html><Esc>O
   inoremap <silent> <buffer> <SID>HtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
   imap     <buffer> <C-X>H <SID>HtmlComplete
   inoremap <silent> <buffer> <C-X>$ <C-R>=<SID>javascriptIncludeTag()<CR>
   inoremap <silent> <buffer> <C-X>@ <C-R>=<SID>stylesheetTag()<CR>
   inoremap <silent> <buffer> <C-X><Space> <Esc>ciw<Lt><C-R>"<C-R>=<SID>tagextras()<CR>></<C-R>"><Esc>b2hi
   inoremap <silent> <buffer> <C-X><CR> <Esc>ciw<Lt><C-R>"<C-R>=<SID>tagextras()<CR>><CR></<C-R>"><Esc>O
-  "noremap! <silent> <buffer> <C-X>, <C-R>=<SID>closetagback()<CR>
   if exists("&omnifunc")
     inoremap <silent> <buffer> <C-X>/ <Lt>/<C-R>=<SID>htmlEn()<CR><C-X><C-O><C-R>=<SID>htmlDis()<CR><C-F>
     if exists(":XMLns")
@@ -178,8 +171,6 @@ function! s:Init()
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
   elseif &ft =~ "django"
-    "inoremap <buffer> <SID>ragtagOopen    {{
-    "inoremap <buffer> <SID>ragtagOclose   }}<Left>
     inoremap <buffer> <C-X><Lt> {{
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{% \r %}"
@@ -221,7 +212,6 @@ function! s:Init()
   if &ft == "eruby"
     inoremap  <buffer> <C-X>- <%<Space><Space>-%><Esc>3hi
     inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>-%><Esc>F<NL>s
-    "let b:surround_45 = "<% \r -%>"
   elseif &ft == "cf"
     inoremap  <buffer> <C-X>- <cf><Left>
     inoremap  <buffer> <C-X>_ <cfset ><Left>
@@ -268,26 +258,6 @@ function! s:Init()
   imap <buffer> <C-X>&           <Plug>ragtagXmlEncode
   imap <buffer> <C-V>%           <Plug>ragtagUrlV
   imap <buffer> <C-V>&           <Plug>ragtagXmlV
-  " Are these really worth it?
-  "nmap <script><buffer> <LocalLeader>iu  i<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>ix  i<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>Iu  I<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>Ix  I<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>au  a<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>ax  a<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>Au  A<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>Ax  A<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>ou  o<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>ox  o<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>Ou  O<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>Ox  O<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>su  s<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>sx  s<SID>ragtagXmlEncode
-  "nmap <script><buffer> <LocalLeader>Su  S<SID>ragtagUrlEncode
-  "nmap <script><buffer> <LocalLeader>Sx  S<SID>ragtagXmlEncode
-  "if has("spell")
-  "setlocal spell
-  "endif
   if !exists("b:did_indent")
     if s:subtype() == "xml"
       runtime! indent/xml.vim
@@ -545,7 +515,6 @@ function! s:opfunc(algorithm,type)
   let @@ = reg_save
 endfunction
 
-inoremap <silent> <SID>urlequal <C-R>=<SID>getinput()=~?'\%([?&]\<Bar>&amp;\)[%a-z0-9._~-]*$'?'=':'%3D'<CR>
 inoremap <silent> <SID>urlspace <C-R>=<SID>getinput()=~?'\%([?&]\<Bar>&amp;\)[%a-z0-9._~+-]*=[%a-z0-9._~+-]*$'?'+':'%20'<CR>
 
 function! s:urltab(htmlesc)
@@ -585,7 +554,6 @@ function! s:toggleurlescape()
   imap     <buffer> <BS> <Plug>ragtagBSUrl
   inoremap <buffer> <CR> %0A
   imap <script> <buffer> <Space> <SID>urlspace
-  "imap <script> <buffer> =       <SID>urlequal
   inoremap <buffer> <Tab> &
   inoremap <buffer> <Bar> %7C
   if htmllayer
