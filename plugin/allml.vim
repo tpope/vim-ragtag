@@ -331,24 +331,14 @@ endfunction
 
 function! s:stylesheetTag()
     if !exists("b:allml_stylesheet_link_tag")
-        if &ft == "eruby" && expand('%:p') =~ '\<app[\\/]views\>'
-            " This will ultimately be factored into rails.vim
-            let b:allml_stylesheet_link_tag = "<%= stylesheet_link_tag '\r' %>"
-        else
-            let b:allml_stylesheet_link_tag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/\r.css\" />"
-        endif
+        let b:allml_stylesheet_link_tag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/\r.css\" />"
     endif
     return s:insertTag(b:allml_stylesheet_link_tag)
 endfunction
 
 function! s:javascriptIncludeTag()
     if !exists("b:allml_javascript_include_tag")
-        if &ft == "eruby" && expand('%:p') =~ '\<app[\\/]views\>'
-            " This will ultimately be factored into rails.vim
-             let b:allml_javascript_include_tag = "<%= jaaaavascript_include_tag :\rdefaults\r %>"
-         else
-             let b:allml_javascript_include_tag = "<script type=\"text/javascript\" src=\"/javascripts/\r.js\"></script>"
-        endif
+        let b:allml_javascript_include_tag = "<script type=\"text/javascript\" src=\"/javascripts/\r.js\"></script>"
     endif
     return s:insertTag(b:allml_javascript_include_tag)
 endfunction
