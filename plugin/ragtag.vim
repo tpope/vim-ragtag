@@ -52,14 +52,14 @@
 " mode only and always encode/decode the current line.
 "
 " Default map      Global map
-" <LocalLeader>eu  <Plug>allmlUrlEncode
-" <LocalLeader>du  <Plug>allmlUrlDecode
-" <LocalLeader>ex  <Plug>allmlXmlEncode
-" <LocalLeader>dx  <Plug>allmlXmlDecode
-" <LocalLeader>euu <Plug>allmlLineUrlEncode
-" <LocalLeader>duu <Plug>allmlLineUrlDecode
-" <LocalLeader>exx <Plug>allmlLineXmlEncode
-" <LocalLeader>dxx <Plug>allmlLineXmlDecode
+" <LocalLeader>eu  <Plug>ragtagUrlEncode
+" <LocalLeader>du  <Plug>ragtagUrlDecode
+" <LocalLeader>ex  <Plug>ragtagXmlEncode
+" <LocalLeader>dx  <Plug>ragtagXmlDecode
+" <LocalLeader>euu <Plug>ragtagLineUrlEncode
+" <LocalLeader>duu <Plug>ragtagLineUrlDecode
+" <LocalLeader>exx <Plug>ragtagLineXmlEncode
+" <LocalLeader>dxx <Plug>ragtagLineXmlDecode
 "
 " Don't let the names fool you, the XmlEncode mappings work on HTML as well,
 " and add a few additional escaped characters if the buffer is confirmed to
@@ -70,10 +70,10 @@
 " mode where characters are encoded automatically when required.  This is
 " quite cool for demos but is of limited practical value otherwise.
 "
-" <C-V>%           <Plug>allmlUrlV
-" <C-V>&           <Plug>allmlXmlV
-" <C-X>%           <Plug>allmlUrlEncode
-" <C-X>&           <Plug>allmlXmlEncode
+" <C-V>%           <Plug>ragtagUrlV
+" <C-V>&           <Plug>ragtagXmlV
+" <C-X>%           <Plug>ragtagUrlEncode
+" <C-X>&           <Plug>ragtagXmlEncode
 "
 " Surroundings:
 "
@@ -109,7 +109,7 @@ if has("autocmd")
     augroup END
 endif
 
-inoremap <silent> <Plug>allmlHtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
+inoremap <silent> <Plug>ragtagHtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
 
 " Public interface, for if you have your own filetypes to activate on
 function! RagtagInit()
@@ -161,12 +161,12 @@ function! s:Init()
     let g:surround_{char2nr("p")} = "<p>\n\t\r\n</p>"
     let g:surround_{char2nr("d")} = "<div\1div: \r^[^ ]\r &\1>\n\t\r\n</div>"
     imap <buffer> <C-X><C-_> <C-X>/
-    imap <buffer> <SID>allmlOopen    <C-X><Lt><Space>
-    imap <buffer> <SID>allmlOclose   <Space><C-X>><Left><Left>
+    imap <buffer> <SID>ragtagOopen    <C-X><Lt><Space>
+    imap <buffer> <SID>ragtagOclose   <Space><C-X>><Left><Left>
     if &ft == "php"
         inoremap <buffer> <C-X><Lt> <?php
         inoremap <buffer> <C-X>>    ?>
-        inoremap <buffer> <SID>allmlOopen    <?php<Space>print<Space>
+        inoremap <buffer> <SID>ragtagOopen    <?php<Space>print<Space>
         let b:surround_45 = "<?php \r ?>"
         let b:surround_61 = "<?php print \r ?>"
     elseif &ft == "htmltt" || &ft == "tt2html"
@@ -178,35 +178,35 @@ function! s:Init()
             let b:surround_101 = "[% \r %]\n[% END %]"
         endif
     elseif &ft =~ "django"
-        "inoremap <buffer> <SID>allmlOopen    {{
-        "inoremap <buffer> <SID>allmlOclose   }}<Left>
+        "inoremap <buffer> <SID>ragtagOopen    {{
+        "inoremap <buffer> <SID>ragtagOclose   }}<Left>
         inoremap <buffer> <C-X><Lt> {{
         inoremap <buffer> <C-X>>    }}
         let b:surround_45 = "{% \r %}"
         let b:surround_61 = "{{ \r }}"
     elseif &ft == "mason"
-        inoremap <buffer> <SID>allmlOopen    <&<Space>
-        inoremap <buffer> <SID>allmlOclose   <Space>&><Left><Left>
+        inoremap <buffer> <SID>ragtagOopen    <&<Space>
+        inoremap <buffer> <SID>ragtagOclose   <Space>&><Left><Left>
         inoremap <buffer> <C-X><Lt> <%
         inoremap <buffer> <C-X>>    %>
         let b:surround_45 = "<% \r %>"
         let b:surround_61 = "<& \r &>"
     elseif &ft == "cf"
-        inoremap <buffer> <SID>allmlOopen    <cfoutput>
-        inoremap <buffer> <SID>allmlOclose   </cfoutput><Left><C-Left><Left>
+        inoremap <buffer> <SID>ragtagOopen    <cfoutput>
+        inoremap <buffer> <SID>ragtagOclose   </cfoutput><Left><C-Left><Left>
         inoremap <buffer> <C-X><Lt> <cf
         inoremap <buffer> <C-X>>    >
         let b:surround_45 = "<cf\r>"
         let b:surround_61 = "<cfoutput>\r</cfoutput>"
     else
-        inoremap <buffer> <SID>allmlOopen    <%=<Space>
+        inoremap <buffer> <SID>ragtagOopen    <%=<Space>
         inoremap <buffer> <C-X><Lt> <%
         inoremap <buffer> <C-X>>    %>
         let b:surround_45 = "<% \r %>"
         let b:surround_61 = "<%= \r %>"
     endif
-    imap     <buffer> <C-X>= <SID>allmlOopen<SID>allmlOclose<Left>
-    imap     <buffer> <C-X>+ <C-V><NL><Esc>I<SID>allmlOopen<Space><Esc>A<Space><SID>allmlOclose<Esc>F<NL>s
+    imap     <buffer> <C-X>= <SID>ragtagOopen<SID>ragtagOclose<Left>
+    imap     <buffer> <C-X>+ <C-V><NL><Esc>I<SID>ragtagOopen<Space><Esc>A<Space><SID>ragtagOclose<Esc>F<NL>s
     " <%\n\n%>
     if &ft == "cf"
         inoremap <buffer> <C-X>] <cfscript><CR></cfscript><Esc>O
@@ -256,35 +256,35 @@ function! s:Init()
         imap     <buffer> <C-X>"     <C-V><NL><Esc>I<C-X><Lt>#<Space><Esc>A<Space><C-X>><Esc>F<NL>s
         let b:surround_35 = maparg("<C-X><Lt>","i")."# \r ".maparg("<C-X>>","i")
     endif
-    map  <buffer> <LocalLeader>eu  <Plug>allmlUrlEncode
-    map  <buffer> <LocalLeader>du  <Plug>allmlUrlDecode
-    map  <buffer> <LocalLeader>ex  <Plug>allmlXmlEncode
-    map  <buffer> <LocalLeader>dx  <Plug>allmlXmlDecode
-    nmap <buffer> <LocalLeader>euu <Plug>allmlLineUrlEncode
-    nmap <buffer> <LocalLeader>duu <Plug>allmlLineUrlDecode
-    nmap <buffer> <LocalLeader>exx <Plug>allmlLineXmlEncode
-    nmap <buffer> <LocalLeader>dxx <Plug>allmlLineXmlDecode
-    imap <buffer> <C-X>%           <Plug>allmlUrlEncode
-    imap <buffer> <C-X>&           <Plug>allmlXmlEncode
-    imap <buffer> <C-V>%           <Plug>allmlUrlV
-    imap <buffer> <C-V>&           <Plug>allmlXmlV
+    map  <buffer> <LocalLeader>eu  <Plug>ragtagUrlEncode
+    map  <buffer> <LocalLeader>du  <Plug>ragtagUrlDecode
+    map  <buffer> <LocalLeader>ex  <Plug>ragtagXmlEncode
+    map  <buffer> <LocalLeader>dx  <Plug>ragtagXmlDecode
+    nmap <buffer> <LocalLeader>euu <Plug>ragtagLineUrlEncode
+    nmap <buffer> <LocalLeader>duu <Plug>ragtagLineUrlDecode
+    nmap <buffer> <LocalLeader>exx <Plug>ragtagLineXmlEncode
+    nmap <buffer> <LocalLeader>dxx <Plug>ragtagLineXmlDecode
+    imap <buffer> <C-X>%           <Plug>ragtagUrlEncode
+    imap <buffer> <C-X>&           <Plug>ragtagXmlEncode
+    imap <buffer> <C-V>%           <Plug>ragtagUrlV
+    imap <buffer> <C-V>&           <Plug>ragtagXmlV
     " Are these really worth it?
-    "nmap <script><buffer> <LocalLeader>iu  i<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>ix  i<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>Iu  I<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>Ix  I<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>au  a<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>ax  a<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>Au  A<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>Ax  A<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>ou  o<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>ox  o<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>Ou  O<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>Ox  O<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>su  s<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>sx  s<SID>allmlXmlEncode
-    "nmap <script><buffer> <LocalLeader>Su  S<SID>allmlUrlEncode
-    "nmap <script><buffer> <LocalLeader>Sx  S<SID>allmlXmlEncode
+    "nmap <script><buffer> <LocalLeader>iu  i<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>ix  i<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>Iu  I<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>Ix  I<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>au  a<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>ax  a<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>Au  A<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>Ax  A<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>ou  o<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>ox  o<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>Ou  O<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>Ox  O<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>su  s<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>sx  s<SID>ragtagXmlEncode
+    "nmap <script><buffer> <LocalLeader>Su  S<SID>ragtagUrlEncode
+    "nmap <script><buffer> <LocalLeader>Sx  S<SID>ragtagXmlEncode
     "if has("spell")
         "setlocal spell
     "endif
@@ -582,7 +582,7 @@ function! s:toggleurlescape()
         call s:disableescape()
     endif
     let b:ragtag_escape_mode = "url"
-    imap     <buffer> <BS> <Plug>allmlBSUrl
+    imap     <buffer> <BS> <Plug>ragtagBSUrl
     inoremap <buffer> <CR> %0A
     imap <script> <buffer> <Space> <SID>urlspace
     "imap <script> <buffer> =       <SID>urlequal
@@ -633,7 +633,7 @@ function! s:togglexmlescape()
         call s:disableescape()
     endif
     let b:ragtag_escape_mode = "xml"
-    imap <buffer> <BS> <Plug>allmlBSXml
+    imap <buffer> <BS> <Plug>ragtagBSXml
     inoremap <buffer> <Lt> &lt;
     inoremap <buffer> >    &gt;
     inoremap <buffer> &    &amp;
@@ -682,41 +682,41 @@ function! s:bspattern(pattern)
     endif
 endfunction
 
-nnoremap <silent> <Plug>allmlUrlEncode :<C-U>set opfunc=<SID>opfuncUrlEncode<CR>g@
-vnoremap <silent> <Plug>allmlUrlEncode :<C-U>call <SID>opfuncUrlEncode(visualmode())<CR>
-nnoremap <silent> <Plug>allmlLineUrlEncode :<C-U>call <SID>opfuncUrlEncode(v:count1)<CR>
-nnoremap <silent> <Plug>allmlUrlDecode :<C-U>set opfunc=<SID>opfuncUrlDecode<CR>g@
-vnoremap <silent> <Plug>allmlUrlDecode :<C-U>call <SID>opfuncUrlDecode(visualmode())<CR>
-nnoremap <silent> <Plug>allmlLineUrlDecode :<C-U>call <SID>opfuncUrlDecode(v:count1)<CR>
-nnoremap <silent> <Plug>allmlXmlEncode :<C-U>set opfunc=<SID>opfuncXmlEncode<CR>g@
-vnoremap <silent> <Plug>allmlXmlEncode :<C-U>call <SID>opfuncXmlEncode(visualmode())<CR>
-nnoremap <silent> <Plug>allmlLineXmlEncode :<C-U>call <SID>opfuncXmlEncode(v:count1)<CR>
-nnoremap <silent> <Plug>allmlXmlDecode :<C-U>set opfunc=<SID>opfuncXmlDecode<CR>g@
-vnoremap <silent> <Plug>allmlXmlDecode :<C-U>call <SID>opfuncXmlDecode(visualmode())<CR>
-nnoremap <silent> <Plug>allmlLineXmlDecode :<C-U>call <SID>opfuncXmlDecode(v:count1)<CR>
+nnoremap <silent> <Plug>ragtagUrlEncode :<C-U>set opfunc=<SID>opfuncUrlEncode<CR>g@
+vnoremap <silent> <Plug>ragtagUrlEncode :<C-U>call <SID>opfuncUrlEncode(visualmode())<CR>
+nnoremap <silent> <Plug>ragtagLineUrlEncode :<C-U>call <SID>opfuncUrlEncode(v:count1)<CR>
+nnoremap <silent> <Plug>ragtagUrlDecode :<C-U>set opfunc=<SID>opfuncUrlDecode<CR>g@
+vnoremap <silent> <Plug>ragtagUrlDecode :<C-U>call <SID>opfuncUrlDecode(visualmode())<CR>
+nnoremap <silent> <Plug>ragtagLineUrlDecode :<C-U>call <SID>opfuncUrlDecode(v:count1)<CR>
+nnoremap <silent> <Plug>ragtagXmlEncode :<C-U>set opfunc=<SID>opfuncXmlEncode<CR>g@
+vnoremap <silent> <Plug>ragtagXmlEncode :<C-U>call <SID>opfuncXmlEncode(visualmode())<CR>
+nnoremap <silent> <Plug>ragtagLineXmlEncode :<C-U>call <SID>opfuncXmlEncode(v:count1)<CR>
+nnoremap <silent> <Plug>ragtagXmlDecode :<C-U>set opfunc=<SID>opfuncXmlDecode<CR>g@
+vnoremap <silent> <Plug>ragtagXmlDecode :<C-U>call <SID>opfuncXmlDecode(visualmode())<CR>
+nnoremap <silent> <Plug>ragtagLineXmlDecode :<C-U>call <SID>opfuncXmlDecode(v:count1)<CR>
 
-inoremap <silent> <Plug>allmlBSUrl     <C-R>=<SID>bspattern('%\x\x\=\<Bar>&amp;')<CR>
-inoremap <silent> <Plug>allmlBSXml     <C-R>=<SID>bspattern('&#\=\w*;\<Bar><[^><]*>\=')<CR>
-inoremap <silent>  <SID>allmlUrlEncode <C-R>=<SID>toggleurlescape()<CR>
-inoremap <silent>  <SID>allmlXmlEncode <C-R>=<SID>togglexmlescape()<CR>
-inoremap <silent> <Plug>allmlUrlEncode <C-R>=<SID>toggleurlescape()<CR>
-inoremap <silent> <Plug>allmlXmlEncode <C-R>=<SID>togglexmlescape()<CR>
-inoremap <silent> <Plug>allmlUrlV      <C-R>=<SID>urlv()<CR>
-inoremap <silent> <Plug>allmlXmlV      <C-R>="&#".getchar().";"<CR>
+inoremap <silent> <Plug>ragtagBSUrl     <C-R>=<SID>bspattern('%\x\x\=\<Bar>&amp;')<CR>
+inoremap <silent> <Plug>ragtagBSXml     <C-R>=<SID>bspattern('&#\=\w*;\<Bar><[^><]*>\=')<CR>
+inoremap <silent>  <SID>ragtagUrlEncode <C-R>=<SID>toggleurlescape()<CR>
+inoremap <silent>  <SID>ragtagXmlEncode <C-R>=<SID>togglexmlescape()<CR>
+inoremap <silent> <Plug>ragtagUrlEncode <C-R>=<SID>toggleurlescape()<CR>
+inoremap <silent> <Plug>ragtagXmlEncode <C-R>=<SID>togglexmlescape()<CR>
+inoremap <silent> <Plug>ragtagUrlV      <C-R>=<SID>urlv()<CR>
+inoremap <silent> <Plug>ragtagXmlV      <C-R>="&#".getchar().";"<CR>
 
 if exists("g:ragtag_global_maps")
-    imap     <C-X>H      <Plug>allmlHtmlComplete
-    imap     <C-X>/    </<Plug>allmlHtmlComplete
-    imap     <C-X>%      <Plug>allmlUrlEncode
-    imap     <C-X>&      <Plug>allmlXmlEncode
-    imap     <C-V>%      <Plug>allmlUrlV
-    imap     <C-V>&      <Plug>allmlXmlV
-    map      <Leader>eu  <Plug>allmlUrlEncode
-    map      <Leader>du  <Plug>allmlUrlDecode
-    map      <Leader>ex  <Plug>allmlXmlEncode
-    map      <Leader>dx  <Plug>allmlXmlDecode
-    nmap     <Leader>euu <Plug>allmlLineUrlEncode
-    nmap     <Leader>duu <Plug>allmlLineUrlDecode
-    nmap     <Leader>exx <Plug>allmlLineXmlEncode
-    nmap     <Leader>dxx <Plug>allmlLineXmlDecode
+    imap     <C-X>H      <Plug>ragtagHtmlComplete
+    imap     <C-X>/    </<Plug>ragtagHtmlComplete
+    imap     <C-X>%      <Plug>ragtagUrlEncode
+    imap     <C-X>&      <Plug>ragtagXmlEncode
+    imap     <C-V>%      <Plug>ragtagUrlV
+    imap     <C-V>&      <Plug>ragtagXmlV
+    map      <Leader>eu  <Plug>ragtagUrlEncode
+    map      <Leader>du  <Plug>ragtagUrlDecode
+    map      <Leader>ex  <Plug>ragtagXmlEncode
+    map      <Leader>dx  <Plug>ragtagXmlDecode
+    nmap     <Leader>euu <Plug>ragtagLineUrlEncode
+    nmap     <Leader>duu <Plug>ragtagLineUrlDecode
+    nmap     <Leader>exx <Plug>ragtagLineXmlEncode
+    nmap     <Leader>dxx <Plug>ragtagLineXmlDecode
 endif
