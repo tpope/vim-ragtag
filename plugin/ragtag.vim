@@ -1,6 +1,6 @@
-" allml.vim - useful XML/HTML mappings
+" ragtag.vim - Ghetto XML/HTML mappings (formerly allml.vim)
 " Author:       Tim Pope <vimNOSPAM@tpope.org>
-" GetLatestVimScripts: 1896 1 :AutoInstall: allml.vim
+" GetLatestVimScripts: 1896 1 :AutoInstall: ragtag.vim
 " $Id$
 
 " Distributable under the same terms as Vim itself (see :help license)
@@ -41,10 +41,11 @@
 " Encoding:
 "
 " Mappings are provided to encode URLs and escape HTML/XML.  By default, they
-" are only only available in the buffers where allml.vim is activated.  If you
-" want them globally, simply add mappingss for each "global map" in the table
-" below that you want.  If you want all of them with a <Leader> prefix, you
-" can let g:allml_global_maps = 1.  (This also gets you a global <C-X>/ map.)
+" are only only available in the buffers where ragtag.vim is activated.  If
+" you want them globally, simply add mappingss for each "global map" in the
+" table below that you want.  If you want all of them with a <Leader> prefix,
+" you can let g:ragtag_global_maps = 1.  (This also gets you a global <C-X>/
+" map.)
 "
 " The first four maps below take a {motion} to specify the text when used in
 " normal mode, and also work in visual mode.  The second four are for normal
@@ -89,34 +90,38 @@
 "
 " inoremap <M-o>       <Esc>o
 " inoremap <C-j>       <Down>
-" let g:allml_global_maps = 1
+" let g:ragtag_global_maps = 1
 
-if exists("g:loaded_allml") || &cp
+if exists("g:loaded_ragtag") || &cp
     finish
 endif
-let g:loaded_allml = 1
+let g:loaded_ragtag = 1
 
 if has("autocmd")
-    augroup allml
+    augroup ragtag
         autocmd!
         autocmd FileType *html*,wml,xml,xslt,xsd,jsp    call s:Init()
         autocmd FileType php,asp*,cf,mason,eruby        call s:Init()
         if version >= 700
             autocmd InsertLeave * call s:Leave()
         endif
-        autocmd CursorHold * if exists("b:loaded_allml") | call s:Leave() | endif
+        autocmd CursorHold * if exists("b:loaded_ragtag") | call s:Leave() | endif
     augroup END
 endif
 
 inoremap <silent> <Plug>allmlHtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
 
+" Public interface, for if you have your own filetypes to activate on
+function! RagtagInit()
+    call s:Init()
+endfunction
+
 function! AllmlInit()
-    " Public interface, for if you have your own filetypes to activate on
     call s:Init()
 endfunction
 
 function! s:Init()
-    let b:loaded_allml = 1
+    let b:loaded_ragtag = 1
     "inoremap <silent> <buffer> <SID>dtmenu  <C-R>=<SID>htmlEn()<CR><Lt>!DOCTYPE<C-X><C-O><C-R>=<SID>htmlDis()<CR><C-P>
     inoremap <silent> <buffer> <SID>xmlversion  <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
     inoremap      <buffer> <SID>htmltrans   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -296,6 +301,7 @@ function! s:Init()
     endif
     set indentkeys+=!^F
     let b:surround_indent = 1
+    silent doautocmd User ragtag
     silent doautocmd User allml
 endfunction
 
@@ -318,29 +324,39 @@ function! s:repeat(str,cnt)
 endfunction
 
 function! s:doctypeSeek()
-    if !exists("b:allml_doctype_index")
-        if &ft == 'xhtml' || &ft == 'eruby'
-            let b:allml_doctype_index = 10
+    if !exists("b:ragtag_doctype_index")
+        if exists("b:allml_doctype_index")
+            let b:ragtag_doctype_index = b:allml_doctype_index
+        elseif &ft == 'xhtml' || &ft == 'eruby'
+            let b:ragtag_doctype_index = 10
         elseif &ft != 'xml'
-            let b:allml_doctype_index = 7
+            let b:ragtag_doctype_index = 7
         endif
     endif
-    let index = b:allml_doctype_index - 1
+    let index = b:ragtag_doctype_index - 1
     return (index < 0 ? s:repeat("\<C-P>",-index) : s:repeat("\<C-N>",index))
 endfunction
 
 function! s:stylesheetTag()
-    if !exists("b:allml_stylesheet_link_tag")
-        let b:allml_stylesheet_link_tag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/\r.css\" />"
+    if !exists("b:ragtag_stylesheet_link_tag")
+        if exists("b:allml_stylesheet_link_tag")
+            let b:ragtag_stylesheet_link_tag = b:allml_stylesheet_link_tag
+        else
+            let b:ragtag_stylesheet_link_tag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/\r.css\" />"
+        endif
     endif
-    return s:insertTag(b:allml_stylesheet_link_tag)
+    return s:insertTag(b:ragtag_stylesheet_link_tag)
 endfunction
 
 function! s:javascriptIncludeTag()
-    if !exists("b:allml_javascript_include_tag")
-        let b:allml_javascript_include_tag = "<script type=\"text/javascript\" src=\"/javascripts/\r.js\"></script>"
+    if !exists("b:ragtag_javascript_include_tag")
+        if exists("b:allml_javascript_include_tag")
+            let b:ragtag_javascript_include_tag = b:allml_javascript_include_tag
+        else
+            let b:ragtag_javascript_include_tag = "<script type=\"text/javascript\" src=\"/javascripts/\r.js\"></script>"
+        endif
     endif
-    return s:insertTag(b:allml_javascript_include_tag)
+    return s:insertTag(b:ragtag_javascript_include_tag)
 endfunction
 
 function! s:insertTag(tag)
@@ -357,21 +373,21 @@ endfunction
 
 
 function! s:htmlEn()
-    let b:allml_omni = &l:omnifunc
-    let b:allml_isk = &l:isk
+    let b:ragtag_omni = &l:omnifunc
+    let b:ragtag_isk = &l:isk
     " : is for namespaced xml attributes
     setlocal omnifunc=htmlcomplete#CompleteTags isk+=:
     return ""
 endfunction
 
 function! s:htmlDis()
-    if exists("b:allml_omni")
-        let &l:omnifunc = b:allml_omni
-        unlet b:allml_omni
+    if exists("b:ragtag_omni")
+        let &l:omnifunc = b:ragtag_omni
+        unlet b:ragtag_omni
     endif
-    if exists("b:allml_isk")
-        let &l:isk = b:allml_isk
-        unlet b:allml_isk
+    if exists("b:ragtag_isk")
+        let &l:isk = b:ragtag_isk
+        unlet b:ragtag_isk
     endif
     return ""
 endfunction
@@ -386,7 +402,7 @@ function! s:subtype()
         return "html"
     elseif &ft == "xhtml" || &ft == "eruby"
         return "xhtml"
-    elseif exists("b:loaded_allml")
+    elseif exists("b:loaded_ragtag")
         return "html"
     else
         return ""
@@ -556,16 +572,16 @@ endfunction
 
 function! s:toggleurlescape()
     let htmllayer = 0
-    if exists("b:allml_escape_mode")
-        if b:allml_escape_mode == "url"
+    if exists("b:ragtag_escape_mode")
+        if b:ragtag_escape_mode == "url"
             call s:disableescape()
             return ""
-        elseif b:allml_escape_mode == "xml"
+        elseif b:ragtag_escape_mode == "xml"
             let htmllayer = 1
         endif
         call s:disableescape()
     endif
-    let b:allml_escape_mode = "url"
+    let b:ragtag_escape_mode = "url"
     imap     <buffer> <BS> <Plug>allmlBSUrl
     inoremap <buffer> <CR> %0A
     imap <script> <buffer> <Space> <SID>urlspace
@@ -609,14 +625,14 @@ function! s:urlv()
 endfunction
 
 function! s:togglexmlescape()
-    if exists("b:allml_escape_mode")
-        if b:allml_escape_mode == "xml"
+    if exists("b:ragtag_escape_mode")
+        if b:ragtag_escape_mode == "xml"
             call s:disableescape()
             return ""
         endif
         call s:disableescape()
     endif
-    let b:allml_escape_mode = "xml"
+    let b:ragtag_escape_mode = "xml"
     imap <buffer> <BS> <Plug>allmlBSXml
     inoremap <buffer> <Lt> &lt;
     inoremap <buffer> >    &gt;
@@ -626,14 +642,14 @@ function! s:togglexmlescape()
 endfunction
 
 function! s:disableescape()
-    if exists("b:allml_escape_mode")
-        if b:allml_escape_mode == "xml"
+    if exists("b:ragtag_escape_mode")
+        if b:ragtag_escape_mode == "xml"
             silent! iunmap <buffer> <BS>
             silent! iunmap <buffer> <Lt>
             silent! iunmap <buffer> >
             silent! iunmap <buffer> &
             silent! iunmap <buffer> "
-        elseif b:allml_escape_mode == "url"
+        elseif b:ragtag_escape_mode == "url"
             silent! iunmap <buffer> <BS>
             silent! iunmap <buffer> <Tab>
             silent! iunmap <buffer> <CR>
@@ -648,7 +664,7 @@ function! s:disableescape()
                 let i = i + 1
             endwhile
         endif
-        unlet b:allml_escape_mode
+        unlet b:ragtag_escape_mode
     endif
 endfunction
 
@@ -688,7 +704,7 @@ inoremap <silent> <Plug>allmlXmlEncode <C-R>=<SID>togglexmlescape()<CR>
 inoremap <silent> <Plug>allmlUrlV      <C-R>=<SID>urlv()<CR>
 inoremap <silent> <Plug>allmlXmlV      <C-R>="&#".getchar().";"<CR>
 
-if exists("g:allml_global_maps")
+if exists("g:ragtag_global_maps")
     imap     <C-X>H      <Plug>allmlHtmlComplete
     imap     <C-X>/    </<Plug>allmlHtmlComplete
     imap     <C-X>%      <Plug>allmlUrlEncode
