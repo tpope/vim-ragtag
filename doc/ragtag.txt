@@ -25,21 +25,21 @@ The table below shows what happens if the binding is pressed on the end of a
 line consisting of "foo".
 
 Mapping       Changed to   (cursor = ^) ~
-<C-X>=        foo<%= ^ %>                               |ragtag-CTRL-X_=|
-<C-X>+        <%= foo^ %>                               |ragtag-CTRL-X_+|
-<C-X>-        foo<% ^ %>                                |ragtag-CTRL-X_-|
-<C-X>_        <% foo^ %>                                |ragtag-CTRL-X__|
-<C-X>'        foo<%# ^ %>                               |ragtag-CTRL-X_'|
+<C-X>=        foo<%= ^ %>                               *ragtag-CTRL-X_=*
+<C-X>+        <%= foo^ %>                               *ragtag-CTRL-X_+*
+<C-X>-        foo<% ^ %>                                *ragtag-CTRL-X_-*
+<C-X>_        <% foo^ %>                                *ragtag-CTRL-X__*
+<C-X>'        foo<%# ^ %>                               *ragtag-CTRL-X_'*
               (mnemonic: ' is a comment in ASP VBS)
-<C-X>"        <%# foo^ %>                               |ragtag-CTRL-X_quote|
-<C-X><Space>  <foo>^</foo>                              |ragtag-CTRL-X_<Space>|
-<C-X><CR>     <foo>\n^\n</foo>                          |ragtag-CTRL-X_<CR>|
-<C-X>/        Last HTML tag closed                      |ragtag-CTRL-X_/|
-<C-X>!        <!DOCTYPE...>/<?xml ...?> (menu)          |ragtag-CTRL-X_!|
-<C-X>@        <link rel="stylesheet" ...>               |ragtag-CTRL-X_@|
+<C-X>"        <%# foo^ %>                               *ragtag-CTRL-X_quote*
+<C-X><Space>  <foo>^</foo>                              *ragtag-CTRL-X_<Space>*
+<C-X><CR>     <foo>\n^\n</foo>                          *ragtag-CTRL-X_<CR>*
+<C-X>/        Last HTML tag closed                      *ragtag-CTRL-X_/*
+<C-X>!        <!DOCTYPE...>/<?xml ...?> (menu)          *ragtag-CTRL-X_!*
+<C-X>@        <link rel="stylesheet" ...>               *ragtag-CTRL-X_@*
               (mnemonic: @ is used for importing in a CSS file)
-<C-X>#        <meta http-equiv="Content-Type" ... />    |ragtag-CTRL-X_#|
-<C-X>$        <script src="/javascripts/^.js"></script> |ragtag-CTRL-X_$|
+<C-X>#        <meta http-equiv="Content-Type" ... />    *ragtag-CTRL-X_#*
+<C-X>$        <script src="/javascripts/^.js"></script> *ragtag-CTRL-X_$*
               (mnemonic: $ is valid in javascript identifiers)
 
 For the bindings that generate HTML tag pairs, in a few cases, attributes will
@@ -78,10 +78,10 @@ mode where characters are encoded automatically when required.  This is quite
 cool for demos but is of limited practical value otherwise.
 
 Default map      Global map ~
-<C-V>%           <Plug>ragtagUrlV                       |ragtag-i_CTRL-V_%|
-<C-V>&           <Plug>ragtagXmlV                       |ragtag-i_CTRL-V_&|
-<C-X>%           <Plug>ragtagUrlEncode                  |ragtag-i_CTRL-X_%|
-<C-X>&           <Plug>ragtagXmlEncode                  |ragtag-i_CTRL-X_&|
+<C-V>%           <Plug>ragtagUrlV                       *ragtag-i_CTRL-V_%*
+<C-V>&           <Plug>ragtagXmlV                       *ragtag-i_CTRL-V_&*
+<C-X>%           <Plug>ragtagUrlEncode                  *ragtag-i_CTRL-X_%*
+<C-X>&           <Plug>ragtagXmlEncode                  *ragtag-i_CTRL-X_&*
 
 SURROUNDINGS                                    *ragtag-surroundings*
 
