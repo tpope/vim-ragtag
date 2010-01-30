@@ -1,0 +1,96 @@
+*ragtag.txt*  Ghetto XML/HTML mappings (formerly allml.vim)
+
+Author:  Tim Pope <vimNOSPAM@tpope.org>         *ragtag-author*
+License: Same terms as Vim itself (see |license|)
+
+This plugin is only available if 'compatible' is not set.
+
+INTRODUCTION                                    *ragtag*
+
+These are my personal mappings for XML/XHTML editing, particularly with
+dynamic content like PHP/ASP/eRuby.  Because they are personal, less effort
+has been put into customizability (if you like these mappings but the lack of
+customizability poses an issue for you, let me know).  Examples shown are for
+eRuby.
+
+You might find these helpful in your vimrc:
+>
+        inoremap <M-o>       <Esc>o
+        inoremap <C-j>       <Down>
+        let g:ragtag_global_maps = 1
+<
+MAPPINGS                                        *ragtag-mappings*
+
+The table below shows what happens if the binding is pressed on the end of a
+line consisting of "foo".
+
+Mapping       Changed to   (cursor = ^) ~
+<C-X>=        foo<%= ^ %>                               |ragtag-CTRL-X_=|
+<C-X>+        <%= foo^ %>                               |ragtag-CTRL-X_+|
+<C-X>-        foo<% ^ %>                                |ragtag-CTRL-X_-|
+<C-X>_        <% foo^ %>                                |ragtag-CTRL-X__|
+<C-X>'        foo<%# ^ %>                               |ragtag-CTRL-X_'|
+              (mnemonic: ' is a comment in ASP VBS)
+<C-X>"        <%# foo^ %>                               |ragtag-CTRL-X_quote|
+<C-X><Space>  <foo>^</foo>                              |ragtag-CTRL-X_<Space>|
+<C-X><CR>     <foo>\n^\n</foo>                          |ragtag-CTRL-X_<CR>|
+<C-X>/        Last HTML tag closed                      |ragtag-CTRL-X_/|
+<C-X>!        <!DOCTYPE...>/<?xml ...?> (menu)          |ragtag-CTRL-X_!|
+<C-X>@        <link rel="stylesheet" ...>               |ragtag-CTRL-X_@|
+              (mnemonic: @ is used for importing in a CSS file)
+<C-X>#        <meta http-equiv="Content-Type" ... />    |ragtag-CTRL-X_#|
+<C-X>$        <script src="/javascripts/^.js"></script> |ragtag-CTRL-X_$|
+              (mnemonic: $ is valid in javascript identifiers)
+
+For the bindings that generate HTML tag pairs, in a few cases, attributes will
+be automatically added.  For example, script becomes >
+        <script type="text/javascript">
+<
+ENCODING                                        *ragtag-encoding*
+
+Mappings are provided to encode URLs and escape HTML/XML.  By default, they
+are only only available in the buffers where ragtag.vim is activated.  If you
+want them globally, simply add mappingss for each "global map" in the table
+below that you want.  If you want all of them with a <Leader> prefix, you can
+let g:ragtag_global_maps = 1.  (This also gets you a global <C-X>/ map.)
+
+The first four maps below take a {motion} to specify the text when used in
+normal mode, and also work in visual mode.  The second four are for normal
+mode only and always encode/decode the current line.
+
+Default map      Global map ~
+<LocalLeader>eu  <Plug>ragtagUrlEncode
+<LocalLeader>du  <Plug>ragtagUrlDecode
+<LocalLeader>ex  <Plug>ragtagXmlEncode
+<LocalLeader>dx  <Plug>ragtagXmlDecode
+<LocalLeader>euu <Plug>ragtagLineUrlEncode
+<LocalLeader>duu <Plug>ragtagLineUrlDecode
+<LocalLeader>exx <Plug>ragtagLineXmlEncode
+<LocalLeader>dxx <Plug>ragtagLineXmlDecode
+
+Don't let the names fool you; the XmlEncode mappings work on HTML as well, and
+add a few additional escaped characters if the buffer is confirmed to contain
+HTML.
+
+There are also a few insert mode mappings.  The first two take the next
+character to be typed and encode it.  The second two put Vim into a special
+mode where characters are encoded automatically when required.  This is quite
+cool for demos but is of limited practical value otherwise.
+
+Default map      Global map ~
+<C-V>%           <Plug>ragtagUrlV                       |ragtag-i_CTRL-V_%|
+<C-V>&           <Plug>ragtagXmlV                       |ragtag-i_CTRL-V_&|
+<C-X>%           <Plug>ragtagUrlEncode                  |ragtag-i_CTRL-X_%|
+<C-X>&           <Plug>ragtagXmlEncode                  |ragtag-i_CTRL-X_&|
+
+SURROUNDINGS                                    *ragtag-surroundings*
+
+Combined with surround.vim, you also get three "replacements".  Below, the ^
+indicates the location of the wrapped text.  See |surround| for details.
+
+Character     Replacement ~
+-             <% ^ %>
+=             <%= ^ %>
+#             <%# ^ %>
+
+ vim:tw=78:et:ft=help:norl:
