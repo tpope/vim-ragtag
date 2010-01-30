@@ -156,14 +156,6 @@ function! s:Init()
     imap     <buffer> <C-X>"     <C-V><NL><Esc>I<C-X><Lt>#<Space><Esc>A<Space><C-X>><Esc>F<NL>s
     let b:surround_35 = maparg("<C-X><Lt>","i")."# \r ".maparg("<C-X>>","i")
   endif
-  map  <buffer> <LocalLeader>eu  <Plug>ragtagUrlEncode
-  map  <buffer> <LocalLeader>du  <Plug>ragtagUrlDecode
-  map  <buffer> <LocalLeader>ex  <Plug>ragtagXmlEncode
-  map  <buffer> <LocalLeader>dx  <Plug>ragtagXmlDecode
-  nmap <buffer> <LocalLeader>euu <Plug>ragtagLineUrlEncode
-  nmap <buffer> <LocalLeader>duu <Plug>ragtagLineUrlDecode
-  nmap <buffer> <LocalLeader>exx <Plug>ragtagLineXmlEncode
-  nmap <buffer> <LocalLeader>dxx <Plug>ragtagLineXmlDecode
   imap <buffer> <C-X>%           <Plug>ragtagUrlEncode
   imap <buffer> <C-X>&           <Plug>ragtagXmlEncode
   imap <buffer> <C-V>%           <Plug>ragtagUrlV
@@ -339,92 +331,6 @@ function! s:tagextras()
   endif
 endfunction
 
-function! s:UrlEncode(str)
-  return substitute(a:str,'[^A-Za-z0-9_.~-]','\="%".printf("%02X",char2nr(submatch(0)))','g')
-endfunction
-
-function! s:UrlDecode(str)
-  let str = substitute(substitute(substitute(a:str,'%0[Aa]\n$','%0A',''),'%0[Aa]','\n','g'),'+',' ','g')
-  return substitute(str,'%\(\x\x\)','\=nr2char("0x".submatch(1))','g')
-endfunction
-
-let s:entities = "\u00a0nbsp\n\u00a9copy\n\u00ablaquo\n\u00aereg\n\u00b5micro\n\u00b6para\n\u00bbraquo\n\u2018lsquo\n\u2019rsquo\n\u201cldquo\n\u201drdquo\n\u2026hellip\n"
-
-function! s:XmlEncode(str)
-  let str = a:str
-  let str = substitute(str,'&','\&amp;','g')
-  let str = substitute(str,'<','\&lt;','g')
-  let str = substitute(str,'>','\&gt;','g')
-  let str = substitute(str,'"','\&quot;','g')
-  if s:subtype() == 'xml'
-    let str = substitute(str,"'",'\&apos;','g')
-  elseif s:subtype() =~ 'html'
-    let changes = s:entities
-    while changes != ""
-      let orig = matchstr(changes,'.')
-      let repl = matchstr(changes,'^.\zs.\{-\}\ze\%(\n\|$\)')
-      let changes = substitute(changes,'^.\{-\}\%(\n\|$\)','','')
-      let str = substitute(str,'\M'.orig,'\&'.repl.';','g')
-    endwhile
-  endif
-  return str
-endfunction
-
-function! s:XmlDecode(str)
-  let str = substitute(a:str,'&#\%(0*38\|x0*26\);','&amp;','g')
-  let changes = s:entities
-  while changes != ""
-    let orig = matchstr(changes,'.')
-    let repl = matchstr(changes,'^.\zs.\{-\}\ze\%(\n\|$\)')
-    let changes = substitute(changes,'^.\{-\}\%(\n\|$\)','','')
-    let str = substitute(str,'&'.repl.';',orig == '&' ? '\&' : orig,'g')
-  endwhile
-  let str = substitute(str,'&#\(\d\+\);','\=nr2char(submatch(1))','g')
-  let str = substitute(str,'&#\(x\x\+\);','\=nr2char("0".submatch(1))','g')
-  let str = substitute(str,'&apos;',"'",'g')
-  let str = substitute(str,'&quot;','"','g')
-  let str = substitute(str,'&gt;','>','g')
-  let str = substitute(str,'&lt;','<','g')
-  return substitute(str,'&amp;','\&','g')
-endfunction
-
-function! s:opfuncUrlEncode(type)
-  return s:opfunc("UrlEncode",a:type)
-endfunction
-
-function! s:opfuncUrlDecode(type)
-  return s:opfunc("UrlDecode",a:type)
-endfunction
-
-function! s:opfuncXmlEncode(type)
-  return s:opfunc("XmlEncode",a:type)
-endfunction
-
-function! s:opfuncXmlDecode(type)
-  return s:opfunc("XmlDecode",a:type)
-endfunction
-
-function! s:opfunc(algorithm,type)
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let reg_save = @@
-  if a:type =~ '^\d\+$'
-    silent exe 'norm! ^v'.a:type.'$hy'
-  elseif a:type =~ '^.$'
-    silent exe "normal! `<" . a:type . "`>y"
-  elseif a:type == 'line'
-    silent exe "normal! '[V']y"
-  elseif a:type == 'block'
-    silent exe "normal! `[\<C-V>`]y"
-  else
-    silent exe "normal! `[v`]y"
-  endif
-  let @@ = s:{a:algorithm}(@@)
-  norm! gvp
-  let &selection = sel_save
-  let @@ = reg_save
-endfunction
-
 inoremap <silent> <SID>urlspace <C-R>=<SID>getinput()=~?'\%([?&]\<Bar>&amp;\)[%a-z0-9._~+-]*=[%a-z0-9._~+-]*$'?'+':'%20'<CR>
 
 function! s:urltab(htmlesc)
@@ -560,19 +466,6 @@ function! s:bspattern(pattern)
   endif
 endfunction
 
-nnoremap <silent> <Plug>ragtagUrlEncode :<C-U>set opfunc=<SID>opfuncUrlEncode<CR>g@
-vnoremap <silent> <Plug>ragtagUrlEncode :<C-U>call <SID>opfuncUrlEncode(visualmode())<CR>
-nnoremap <silent> <Plug>ragtagLineUrlEncode :<C-U>call <SID>opfuncUrlEncode(v:count1)<CR>
-nnoremap <silent> <Plug>ragtagUrlDecode :<C-U>set opfunc=<SID>opfuncUrlDecode<CR>g@
-vnoremap <silent> <Plug>ragtagUrlDecode :<C-U>call <SID>opfuncUrlDecode(visualmode())<CR>
-nnoremap <silent> <Plug>ragtagLineUrlDecode :<C-U>call <SID>opfuncUrlDecode(v:count1)<CR>
-nnoremap <silent> <Plug>ragtagXmlEncode :<C-U>set opfunc=<SID>opfuncXmlEncode<CR>g@
-vnoremap <silent> <Plug>ragtagXmlEncode :<C-U>call <SID>opfuncXmlEncode(visualmode())<CR>
-nnoremap <silent> <Plug>ragtagLineXmlEncode :<C-U>call <SID>opfuncXmlEncode(v:count1)<CR>
-nnoremap <silent> <Plug>ragtagXmlDecode :<C-U>set opfunc=<SID>opfuncXmlDecode<CR>g@
-vnoremap <silent> <Plug>ragtagXmlDecode :<C-U>call <SID>opfuncXmlDecode(visualmode())<CR>
-nnoremap <silent> <Plug>ragtagLineXmlDecode :<C-U>call <SID>opfuncXmlDecode(v:count1)<CR>
-
 inoremap <silent> <Plug>ragtagBSUrl     <C-R>=<SID>bspattern('%\x\x\=\<Bar>&amp;')<CR>
 inoremap <silent> <Plug>ragtagBSXml     <C-R>=<SID>bspattern('&#\=\w*;\<Bar><[^><]*>\=')<CR>
 inoremap <silent>  <SID>ragtagUrlEncode <C-R>=<SID>toggleurlescape()<CR>
@@ -589,12 +482,4 @@ if exists("g:ragtag_global_maps")
   imap     <C-X>&      <Plug>ragtagXmlEncode
   imap     <C-V>%      <Plug>ragtagUrlV
   imap     <C-V>&      <Plug>ragtagXmlV
-  map      <Leader>eu  <Plug>ragtagUrlEncode
-  map      <Leader>du  <Plug>ragtagUrlDecode
-  map      <Leader>ex  <Plug>ragtagXmlEncode
-  map      <Leader>dx  <Plug>ragtagXmlDecode
-  nmap     <Leader>euu <Plug>ragtagLineUrlEncode
-  nmap     <Leader>duu <Plug>ragtagLineUrlDecode
-  nmap     <Leader>exx <Plug>ragtagLineXmlEncode
-  nmap     <Leader>dxx <Plug>ragtagLineXmlDecode
 endif

@@ -48,40 +48,26 @@ be automatically added.  For example, script becomes >
 <
 ENCODING                                        *ragtag-encoding*
 
-Mappings are provided to encode URLs and escape HTML/XML.  By default, they
-are only only available in the buffers where ragtag.vim is activated.  If you
-want them globally, simply add mappingss for each "global map" in the table
-below that you want.  If you want all of them with a <Leader> prefix, you can
-let g:ragtag_global_maps = 1.  (This also gets you a global <C-X>/ map.)
+This plugin used to provide a set of general purpose XML/URL encoding/decoding
+mappings.  These mappings have been extracted to a (highly recommended) plugin
+named unimpaired.vim.  Left behind were the following four insert mode
+mappings (mostly useful as stupid party tricks).
 
-The first four maps below take a {motion} to specify the text when used in
-normal mode, and also work in visual mode.  The second four are for normal
-mode only and always encode/decode the current line.
+                                                *ragtag-CTRL-V_%*
+<Plug>ragtagUrlV        URL encode the next character.
+<C-V>%
 
-Default map      Global map ~
-<LocalLeader>eu  <Plug>ragtagUrlEncode
-<LocalLeader>du  <Plug>ragtagUrlDecode
-<LocalLeader>ex  <Plug>ragtagXmlEncode
-<LocalLeader>dx  <Plug>ragtagXmlDecode
-<LocalLeader>euu <Plug>ragtagLineUrlEncode
-<LocalLeader>duu <Plug>ragtagLineUrlDecode
-<LocalLeader>exx <Plug>ragtagLineXmlEncode
-<LocalLeader>dxx <Plug>ragtagLineXmlDecode
+                                                *ragtag-CTRL-V_&*
+<Plug>ragtagXmlV        XML encode the next character.
+<C-V>&
 
-Don't let the names fool you; the XmlEncode mappings work on HTML as well, and
-add a few additional escaped characters if the buffer is confirmed to contain
-HTML.
+                                                *ragtag-CTRL-X_%*
+<Plug>ragtagUrlEncode   Toggle a mode that automatically URL encodes unsafe
+<C-X>%                  characters.
 
-There are also a few insert mode mappings.  The first two take the next
-character to be typed and encode it.  The second two put Vim into a special
-mode where characters are encoded automatically when required.  This is quite
-cool for demos but is of limited practical value otherwise.
-
-Default map      Global map ~
-<C-V>%           <Plug>ragtagUrlV                       *ragtag-i_CTRL-V_%*
-<C-V>&           <Plug>ragtagXmlV                       *ragtag-i_CTRL-V_&*
-<C-X>%           <Plug>ragtagUrlEncode                  *ragtag-i_CTRL-X_%*
-<C-X>&           <Plug>ragtagXmlEncode                  *ragtag-i_CTRL-X_&*
+                                                *ragtag-CTRL-X_&*
+<Plug>ragtagXmlEncode   Toggle a mode that automatically XML encodes unsafe
+<C-X>&                  characters.
 
 SURROUNDINGS                                    *ragtag-surroundings*
 
