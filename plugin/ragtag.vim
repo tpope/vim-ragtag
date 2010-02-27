@@ -12,7 +12,7 @@ if has("autocmd")
   augroup ragtag
     autocmd!
     autocmd FileType *html*,wml,xml,xslt,xsd,jsp    call s:Init()
-    autocmd FileType php,asp*,cf,mason,eruby        call s:Init()
+    autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
     if version >= 700
       autocmd InsertLeave * call s:Leave()
     endif
@@ -81,9 +81,11 @@ function! s:Init()
     if !exists("b:surround_101")
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
-  elseif &ft =~ "django"
-    inoremap <buffer> <C-X><Lt> {{
-    inoremap <buffer> <C-X>>    }}
+  elseif &ft =~ "django" || &ft == "liquid"
+    inoremap <buffer> <SID>ragtagOopen    {{<Space>
+    inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
+    inoremap <buffer> <C-X><Lt> {%
+    inoremap <buffer> <C-X>>    %}
     let b:surround_45 = "{% \r %}"
     let b:surround_61 = "{{ \r }}"
   elseif &ft == "mason"
