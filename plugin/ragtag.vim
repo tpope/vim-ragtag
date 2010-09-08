@@ -122,7 +122,7 @@ function! s:Init()
     imap     <buffer> <C-X>] <C-X><Lt><CR><C-X>><Esc>O
   endif
   " <% %>
-  if &ft == "eruby"
+  if &ft =~ '\<eruby\>'
     inoremap  <buffer> <C-X>- <%<Space><Space>-%><Esc>3hi
     inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>-%><Esc>F<NL>s
   elseif &ft == "cf"
@@ -206,7 +206,7 @@ function! s:doctypeSeek()
   if !exists("b:ragtag_doctype_index")
     if exists("b:allml_doctype_index")
       let b:ragtag_doctype_index = b:allml_doctype_index
-    elseif &ft == 'xhtml' || &ft == 'eruby'
+    elseif &ft == 'xhtml' || &ft =~ '\<eruby\>'
       let b:ragtag_doctype_index = 10
     elseif &ft != 'xml'
       let b:ragtag_doctype_index = 7
@@ -279,7 +279,7 @@ function! s:subtype()
     return 'xhtml'
   elseif top =~ '[^<]\<html\>'
     return "html"
-  elseif &ft == "xhtml" || &ft == "eruby"
+  elseif &ft == "xhtml" || &ft == '\<eruby\>'
     return "xhtml"
   elseif exists("b:loaded_ragtag")
     return "html"
