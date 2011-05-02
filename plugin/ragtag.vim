@@ -71,9 +71,9 @@ function! s:Init()
   if &ft == "php"
     inoremap <buffer> <C-X><Lt> <?php
     inoremap <buffer> <C-X>>    ?>
-    inoremap <buffer> <SID>ragtagOopen    <?php<Space>print<Space>
+    inoremap <buffer> <SID>ragtagOopen    <?php<Space>echo<Space>
     let b:surround_45 = "<?php \r ?>"
-    let b:surround_61 = "<?php print \r ?>"
+    let b:surround_61 = "<?php echo \r ?>"
   elseif &ft == "htmltt" || &ft == "tt2html"
     inoremap <buffer> <C-X><Lt> [%
     inoremap <buffer> <C-X>>    %]
