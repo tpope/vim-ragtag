@@ -81,7 +81,7 @@ function! s:Init()
     if !exists("b:surround_101")
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
-  elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja'
+  elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja' || &ft == 'twig'
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
     inoremap <buffer> <C-X><Lt> {%
@@ -150,7 +150,7 @@ function! s:Init()
     inoremap <buffer> <C-X>'     <Lt>!--<Space><Space>--><Esc>3hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!--<Space><Esc>A<Space>--><Esc>F<NL>s
     let b:surround_35 = "<!-- \r -->"
-  elseif &ft == "django" || &ft == "htmldjango" || &ft == 'htmljinja'
+  elseif &ft == "django" || &ft == "htmldjango" || &ft == 'htmljinja' || &ft == 'twig'
     inoremap <buffer> <C-X>'     {#<Space><Space>#}<Esc>2hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{#<Space><Esc>A<Space>#}<Esc>F<NL>s
     let b:surround_35 = "{# \r #}"
