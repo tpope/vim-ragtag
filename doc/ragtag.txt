@@ -1,6 +1,6 @@
 *ragtag.txt*  Ghetto XML/HTML mappings (formerly allml.vim)
 
-Author:  Tim Pope <vimNOSPAM@tpope.org>         *ragtag-author*
+Author:  Tim Pope <http://tpo.pe/>
 License: Same terms as Vim itself (see |license|)
 
 This plugin is only available if 'compatible' is not set.

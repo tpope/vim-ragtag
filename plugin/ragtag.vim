@@ -1,5 +1,5 @@
 " ragtag.vim - Ghetto XML/HTML mappings (formerly allml.vim)
-" Author:       Tim Pope <vimNOSPAM@tpope.org>
+" Author:       Tim Pope <http://tpo.pe/>
 " Version:      2.0
 " GetLatestVimScripts: 1896 1 :AutoInstall: ragtag.vim
 
