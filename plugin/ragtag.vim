@@ -11,8 +11,9 @@ let g:loaded_ragtag = 1
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,xml,xslt,xsd,jsp    call s:Init()
+    autocmd FileType *html*,wml,jsp                 call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
+    autocmd FileType xml,xslt,xsd,docbk             call s:Init()
     if version >= 700
       autocmd InsertLeave * call s:Leave()
     endif
@@ -273,7 +274,7 @@ endfunction
 
 function! s:subtype()
   let top = getline(1)."\n".getline(2)
-  if (top =~ '<?xml\>' && &ft !~? 'html') || &ft =~? '^\%(xml\|xsd\|xslt\)$'
+  if (top =~ '<?xml\>' && &ft !~? 'html') || &ft =~? '^\%(xml\|xsd\|xslt\|docbk\)$'
     return "xml"
   elseif top =~? '\<xhtml\>'
     return 'xhtml'
