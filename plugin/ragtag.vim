@@ -181,8 +181,8 @@ function! s:Init()
   endif
   set indentkeys+=!^F
   let b:surround_indent = 1
+  silent doautocmd User Ragtag
   silent doautocmd User ragtag
-  silent doautocmd User allml
 endfunction
 
 function! s:Leave()
