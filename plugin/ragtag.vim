@@ -35,7 +35,7 @@ endfunction
 function! s:Init()
   let b:loaded_ragtag = 1
   inoremap <silent> <buffer> <SID>xmlversion  <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
-  inoremap      <buffer> <SID>htmltrans   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+  inoremap      <buffer> <SID>html5       <!DOCTYPE html>
   inoremap      <buffer> <SID>xhtmltrans  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   if s:subtype() == "xml"
     imap <script> <buffer> <SID>doctype <SID>xmlversion
@@ -44,11 +44,11 @@ function! s:Init()
   elseif s:subtype() == "xhtml"
     imap <script> <buffer> <SID>doctype <SID>xhtmltrans
   else
-    imap <script> <buffer> <SID>doctype <SID>htmltrans
+    imap <script> <buffer> <SID>doctype <SID>html5
   endif
   imap <script> <buffer> <C-X>! <SID>doctype
 
-  imap <silent> <buffer> <C-X># <meta http-equiv="Content-Type" content="text/html; charset=<C-R>=<SID>charset()<CR>"<C-R>=<SID>closetag()<CR>
+  imap <silent> <buffer> <C-X># <C-R>=<SID>charsetTag()<CR>
   inoremap <silent> <buffer> <SID>HtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
   imap     <buffer> <C-X>H <SID>HtmlComplete
   inoremap <silent> <buffer> <C-X>$ <C-R>=<SID>javascriptIncludeTag()<CR>
@@ -118,7 +118,7 @@ function! s:Init()
   elseif &ft == "mason"
     inoremap <buffer> <C-X>] <%perl><CR></%perl><Esc>O
   elseif &ft == "html" || &ft == "xhtml" || &ft == "xml"
-    imap     <buffer> <C-X>] <script<Space>type="text/javascript"><CR></script><Esc>O
+    imap     <buffer> <C-X>] <script<C-R>=<SID>javascriptType()<CR>><CR></script><Esc>O
   else
     imap     <buffer> <C-X>] <C-X><Lt><CR><C-X>><Esc>O
   endif
@@ -217,15 +217,31 @@ function! s:doctypeSeek()
   return (index < 0 ? s:repeat("\<C-P>",-index) : s:repeat("\<C-N>",index))
 endfunction
 
+function! s:stylesheetType()
+  if s:subtype() == 'html5'
+    return ''
+  else
+    return ' type="text/css"'
+  endif
+endfunction
+
 function! s:stylesheetTag()
   if !exists("b:ragtag_stylesheet_link_tag")
     if exists("b:allml_stylesheet_link_tag")
       let b:ragtag_stylesheet_link_tag = b:allml_stylesheet_link_tag
     else
-      let b:ragtag_stylesheet_link_tag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/\r.css\" />"
+      let b:ragtag_stylesheet_link_tag = '<link rel="stylesheet"'.s:stylesheetType()." href=\"/stylesheets/\r.css\" />"
     endif
   endif
   return s:insertTag(b:ragtag_stylesheet_link_tag)
+endfunction
+
+function! s:javascriptType()
+  if s:subtype() == 'html5'
+    return ''
+  else
+    return ' type="text/javascript"'
+  endif
 endfunction
 
 function! s:javascriptIncludeTag()
@@ -233,7 +249,7 @@ function! s:javascriptIncludeTag()
     if exists("b:allml_javascript_include_tag")
       let b:ragtag_javascript_include_tag = b:allml_javascript_include_tag
     else
-      let b:ragtag_javascript_include_tag = "<script type=\"text/javascript\" src=\"/javascripts/\r.js\"></script>"
+      let b:ragtag_javascript_include_tag = '<script'.s:javascriptType()." src=\"/javascripts/\r.js\"></script>"
     endif
   endif
   return s:insertTag(b:ragtag_javascript_include_tag)
@@ -278,12 +294,14 @@ function! s:subtype()
     return "xml"
   elseif top =~? '\<xhtml\>'
     return 'xhtml'
-  elseif top =~ '[^<]\<html\>'
+  elseif top =~? '<!DOCTYPE html>'
+    return 'html5'
+  elseif top =~? '[^<]\<html\>'
     return "html"
-  elseif &ft == "xhtml" || &ft == '\<eruby\>'
+  elseif &ft == "xhtml"
     return "xhtml"
   elseif exists("b:loaded_ragtag")
-    return "html"
+    return "html5"
   else
     return ""
   endif
@@ -319,6 +337,14 @@ function! s:charset()
   endif
 endfunction
 
+function! s:charsetTag()
+  if s:subtype() == 'html5'
+    return '<meta charset="'.s:charset().'"'.s:closetag()
+  else
+    return '<meta http-equiv="Content-Type" content="text/html; charset='.s:charset().'"'.s:closetag()
+  endif
+endfunction
+
 function! s:tagextras()
   if s:subtype() == "xml"
     return ""
@@ -329,9 +355,9 @@ function! s:tagextras()
     endif
     return ' xmlns="http://www.w3.org/1999/xhtml" lang="'.lang.'" xml:lang="'.lang.'"'
   elseif @" == 'style'
-    return ' type="text/css"'
+    return s:stylesheetType()
   elseif @" == 'script'
-    return ' type="text/javascript"'
+    return s:javascriptType()
   elseif @" == 'table'
     return ' cellspacing="0"'
   else
