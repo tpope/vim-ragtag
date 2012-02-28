@@ -82,6 +82,13 @@ function! s:Init()
     if !exists("b:surround_101")
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
+  elseif &ft == "mustache"
+    inoremap <buffer> <SID>ragtagOopen    {{<Space>
+    inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
+    inoremap <buffer> <C-X><Lt> {{
+    inoremap <buffer> <C-X>>    }}
+    let b:surround_45 = "{{ \r }}"
+    let b:surround_61 = "{{ \r }}"
   elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja'
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
