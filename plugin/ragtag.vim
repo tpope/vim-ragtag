@@ -11,7 +11,7 @@ let g:loaded_ragtag = 1
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,jsp                 call s:Init()
+    autocmd FileType *html*,wml,jsp,mustache        call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
     autocmd FileType xml,xslt,xsd,docbk             call s:Init()
     if version >= 700
@@ -82,6 +82,13 @@ function! s:Init()
     if !exists("b:surround_101")
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
+  elseif &ft == "mustache"
+    inoremap <buffer> <SID>ragtagOopen    {{<Space>
+    inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
+    inoremap <buffer> <C-X><Lt> {{
+    inoremap <buffer> <C-X>>    }}
+    let b:surround_45 = "{{ \r }}"
+    let b:surround_61 = "{{ \r }}"
   elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja'
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
