@@ -182,9 +182,9 @@ function! s:Init()
       runtime! indent/html.vim
     endif
   endif
-  " Pet peeve.  Do people still not close their <p> and <li> tags?
   if exists("g:html_indent_tags") && g:html_indent_tags !~ '\\|p\>'
     let g:html_indent_tags = g:html_indent_tags.'\|p\|li\|dt\|dd'
+    let g:html_indent_tags = g:html_indent_tags.'\|article\|aside\|audio\|bdi\|canvas\|command\|datalist\|details\|figcaption\|figure\|footer\|header\|hgroup\|mark\|meter\|nav\|output\|progress\|rp\|rt\|ruby\|section\|summary\|time\|video'
   endif
   set indentkeys+=!^F
   let b:surround_indent = 1
