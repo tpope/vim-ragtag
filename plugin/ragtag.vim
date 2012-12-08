@@ -53,8 +53,8 @@ function! s:Init()
   imap     <buffer> <C-X>H <SID>HtmlComplete
   inoremap <silent> <buffer> <C-X>$ <C-R>=<SID>javascriptIncludeTag()<CR>
   inoremap <silent> <buffer> <C-X>@ <C-R>=<SID>stylesheetTag()<CR>
-  inoremap <silent> <buffer> <C-X><Space> <Esc>ciw<Lt><C-R>"<C-R>=<SID>tagextras()<CR>></<C-R>"><Esc>b2hi
-  inoremap <silent> <buffer> <C-X><CR> <Esc>ciw<Lt><C-R>"<C-R>=<SID>tagextras()<CR>><CR></<C-R>"><Esc>O
+  inoremap <silent> <buffer> <C-X><Space> <Esc>ciW<Lt><C-R>"<C-R>=<SID>tagextras()<CR>></<C-R>"><Esc>b2hi
+  inoremap <silent> <buffer> <C-X><CR> <Esc>ciW<Lt><C-R>"<C-R>=<SID>tagextras()<CR>><CR></<C-R>"><Esc>O
   if exists("&omnifunc")
     inoremap <silent> <buffer> <C-X>/ <Lt>/<C-R>=<SID>htmlEn()<CR><C-X><C-O><C-R>=<SID>htmlDis()<CR><C-F>
     if exists(":XMLns")
