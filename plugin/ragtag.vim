@@ -11,7 +11,7 @@ let g:loaded_ragtag = 1
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,jsp,mustache        call s:Init()
+    autocmd FileType *html*,wml,jsp,gsp,mustache    call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
     autocmd FileType xml,xslt,xsd,docbk             call s:Init()
     if version >= 700
@@ -154,7 +154,7 @@ function! s:Init()
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!---<Space><Esc>A<Space>---><Esc>F<NL>s
     setlocal commentstring=<!---%s--->
     let b:surround_35 = "<!--- \r --->"
-  elseif &ft == "html" || &ft == "xml" || &ft == "xhtml"
+  elseif &ft == "html" || &ft == "xml" || &ft == "xhtml" || &ft == "gsp"
     inoremap <buffer> <C-X>'     <Lt>!--<Space><Space>--><Esc>3hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!--<Space><Esc>A<Space>--><Esc>F<NL>s
     let b:surround_35 = "<!-- \r -->"
