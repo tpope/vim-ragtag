@@ -11,7 +11,7 @@ let g:loaded_ragtag = 1
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,jsp,mustache        call s:Init()
+    autocmd FileType *html*,wml,jsp,mustache,smarty call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
     autocmd FileType xml,xslt,xsd,docbk             call s:Init()
     if version >= 700
@@ -110,6 +110,13 @@ function! s:Init()
     inoremap <buffer> <C-X>>    >
     let b:surround_45 = "<cf\r>"
     let b:surround_61 = "<cfoutput>\r</cfoutput>"
+  elseif &ft =~ '\<smarty\>'
+    inoremap <buffer> <SID>ragtagOopen    {
+    inoremap <buffer> <SID>ragtagOclose   }
+    inoremap <buffer> <C-X><Lt> {
+    inoremap <buffer> <C-X>>    }
+    let b:surround_45 = "{\r}"
+    let b:surround_61 = "{\r}"
   else
     inoremap <buffer> <SID>ragtagOopen    <%=<Space>
     inoremap <buffer> <C-X><Lt> <%
@@ -136,6 +143,9 @@ function! s:Init()
   elseif &ft == "cf"
     inoremap  <buffer> <C-X>- <cf><Left>
     inoremap  <buffer> <C-X>_ <cfset ><Left>
+  elseif &ft =~ '\<smarty\>'
+    imap <buffer> <C-X>- <C-X><Lt><C-X>><Esc>i
+    imap <buffer> <C-X>_ <C-V><NL><Esc>I<C-X><Lt><Esc>A<C-X>><Esc>F<NL>s
   else
     imap <buffer> <C-X>- <C-X><Lt><Space><Space><C-X>><Esc>2hi
     imap <buffer> <C-X>_ <C-V><NL><Esc>I<C-X><Lt><Space><Esc>A<Space><C-X>><Esc>F<NL>s
@@ -166,6 +176,10 @@ function! s:Init()
     inoremap <buffer> <C-X>'     {%<Space>comment<Space>%}{%<Space>endcomment<Space>%}<Esc>15hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{%<Space>comment<Space>%}<Esc>A{%<Space>endcomment<Space>%}<Esc>F<NL>s
     let b:surround_35 = "{% comment %}\r{% endcomment %}"
+  elseif &ft =~ '\<smarty\>'
+    inoremap <buffer> <C-X>'     {*<Space><Space>*}<Esc>2hi
+    inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{*<Space><Esc>A<Space>*}<Esc>F<NL>s
+    let b:surround_35 = "{* \r *}"
   else
     imap <buffer> <C-X>' <C-X><Lt>#<Space><Space><C-X>><Esc>2hi
     imap <buffer> <C-X>" <C-V><NL><Esc>I<C-X><Lt>#<Space><Esc>A<Space><C-X>><Esc>F<NL>s
