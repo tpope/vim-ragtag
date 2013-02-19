@@ -11,7 +11,7 @@ let g:loaded_ragtag = 1
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,jsp,mustache,smarty call s:Init()
+    autocmd FileType *html*,wml,jsp,mustache,smarty,eco call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
     autocmd FileType xml,xslt,xsd,docbk             call s:Init()
     if version >= 700
@@ -138,7 +138,11 @@ function! s:Init()
   endif
   " <% %>
   if &ft =~ '\<eruby\>'
+<<<<<<< Updated upstream
     inoremap  <buffer> <C-X>- <%<Space><Space>%><Esc>2hi
+=======
+    inoremap  <buffer> <C-X>- <%<Space><Space>%><Esc>3hi
+>>>>>>> Stashed changes
     inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>%><Esc>F<NL>s
   elseif &ft == "cf"
     inoremap  <buffer> <C-X>- <cf><Left>
