@@ -13,7 +13,7 @@ if has("autocmd")
     autocmd!
     autocmd FileType *html*,wml,jsp,mustache,smarty call s:Init()
     autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
-    autocmd FileType xml,xslt,xsd,docbk             call s:Init()
+    autocmd FileType xml,xslt,xsd,docbk,jst         call s:Init()
     if version >= 700
       autocmd InsertLeave * call s:Leave()
     endif
@@ -137,7 +137,7 @@ function! s:Init()
     imap     <buffer> <C-X>] <C-X><Lt><CR><C-X>><Esc>O
   endif
   " <% %>
-  if &ft =~ '\<eruby\>'
+  if &ft =~ '\<eruby\>' || &ft == "jst"
     inoremap  <buffer> <C-X>- <%<Space><Space>%><Esc>2hi
     inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>%><Esc>F<NL>s
   elseif &ft == "cf"
