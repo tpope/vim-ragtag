@@ -32,8 +32,13 @@ function! AllmlInit()
   call s:Init()
 endfunction
 
+function! s:IsInList(val,list)
+  return index(a:list, a:val) >= 0
+endfunction
+
 function! s:Init()
   let b:loaded_ragtag = 1
+  let filetypes = split(&ft,'\.')
   inoremap <silent> <buffer> <SID>xmlversion  <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
   inoremap      <buffer> <SID>html5       <!DOCTYPE html>
   inoremap      <buffer> <SID>xhtmltrans  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -68,13 +73,13 @@ function! s:Init()
   imap <buffer> <C-X><C-_> <C-X>/
   imap <buffer> <SID>ragtagOopen    <C-X><Lt><Space>
   imap <buffer> <SID>ragtagOclose   <Space><C-X>><Left><Left>
-  if &ft == "php"
+  if IsInList("php", filetypes)
     inoremap <buffer> <C-X><Lt> <?php
     inoremap <buffer> <C-X>>    ?>
     inoremap <buffer> <SID>ragtagOopen    <?php<Space>echo<Space>
     let b:surround_45 = "<?php \r ?>"
     let b:surround_61 = "<?php echo \r ?>"
-  elseif &ft == "htmltt" || &ft == "tt2html"
+  elseif IsInList("htmltt", filetypes) || IsInList("tt2html", filetypes)
     inoremap <buffer> <C-X><Lt> [%
     inoremap <buffer> <C-X>>    %]
     let b:surround_45  = "[% \r %]"
@@ -82,35 +87,35 @@ function! s:Init()
     if !exists("b:surround_101")
       let b:surround_101 = "[% \r %]\n[% END %]"
     endif
-  elseif &ft == "mustache"
+  elseif IsInList("mustache", filetypes)
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
     inoremap <buffer> <C-X><Lt> {{
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{{ \r }}"
     let b:surround_61 = "{{ \r }}"
-  elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja'
+  elseif IsInList("django", filetypes) || IsInList("liquid", filetypes) || IsInList('htmljinja', filetypes)
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
     inoremap <buffer> <C-X><Lt> {%
     inoremap <buffer> <C-X>>    %}
     let b:surround_45 = "{% \r %}"
     let b:surround_61 = "{{ \r }}"
-  elseif &ft == "mason"
+  elseif IsInList("mason", filetypes)
     inoremap <buffer> <SID>ragtagOopen    <&<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>&><Left><Left>
     inoremap <buffer> <C-X><Lt> <%
     inoremap <buffer> <C-X>>    %>
     let b:surround_45 = "<% \r %>"
     let b:surround_61 = "<& \r &>"
-  elseif &ft == "cf"
+  elseif IsInList("cf", filetypes)
     inoremap <buffer> <SID>ragtagOopen    <cfoutput>
     inoremap <buffer> <SID>ragtagOclose   </cfoutput><Left><C-Left><Left>
     inoremap <buffer> <C-X><Lt> <cf
     inoremap <buffer> <C-X>>    >
     let b:surround_45 = "<cf\r>"
     let b:surround_61 = "<cfoutput>\r</cfoutput>"
-  elseif &ft =~ '\<smarty\>'
+  elseif IsInList('\<smarty\>', filetypes)
     inoremap <buffer> <SID>ragtagOopen    {
     inoremap <buffer> <SID>ragtagOclose   }
     inoremap <buffer> <C-X><Lt> {
@@ -127,23 +132,23 @@ function! s:Init()
   imap <script> <buffer> <C-X>= <SID>ragtagOopen<SID>ragtagOclose<Left>
   imap <script> <buffer> <C-X>+ <C-V><NL><Esc>I<SID>ragtagOopen<Esc>A<SID>ragtagOclose<Esc>F<NL>s
   " <%\n\n%>
-  if &ft == "cf"
+  if IsInList("cf", filetypes)
     inoremap <buffer> <C-X>] <cfscript><CR></cfscript><Esc>O
-  elseif &ft == "mason"
+  elseif IsInList("mason", filetypes)
     inoremap <buffer> <C-X>] <%perl><CR></%perl><Esc>O
-  elseif &ft == "html" || &ft == "xhtml" || &ft == "xml"
+  elseif IsInList("html", filetypes) || IsInList("xhtml", filetypes) || IsInList("xml", filetypes)
     imap     <buffer> <C-X>] <script<C-R>=<SID>javascriptType()<CR>><CR></script><Esc>O
   else
     imap     <buffer> <C-X>] <C-X><Lt><CR><C-X>><Esc>O
   endif
   " <% %>
-  if &ft =~ '\<eruby\>' || &ft == "jst"
+  if IsInList('\<eruby\>', filetypes) || IsInList("jst", filetypes)
     inoremap  <buffer> <C-X>- <%<Space><Space>%><Esc>2hi
     inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>%><Esc>F<NL>s
-  elseif &ft == "cf"
+  elseif IsInList("cf", filetypes)
     inoremap  <buffer> <C-X>- <cf><Left>
     inoremap  <buffer> <C-X>_ <cfset ><Left>
-  elseif &ft =~ '\<smarty\>'
+  elseif IsInList('\<smarty\>', filetypes)
     imap <buffer> <C-X>- <C-X><Lt><C-X>><Esc>i
     imap <buffer> <C-X>_ <C-V><NL><Esc>I<C-X><Lt><Esc>A<C-X>><Esc>F<NL>s
   else
@@ -151,32 +156,32 @@ function! s:Init()
     imap <buffer> <C-X>_ <C-V><NL><Esc>I<C-X><Lt><Space><Esc>A<Space><C-X>><Esc>F<NL>s
   endif
   " Comments
-  if &ft =~ '^asp'
+  if IsInList('aspperl', filetypes) || IsInList('aspvbs', filetypes)
     imap <buffer> <C-X>' <C-X><Lt>'<Space><Space><C-X>><Esc>2hi
     imap <buffer> <C-X>" <C-V><NL><Esc>I<C-X><Lt>'<Space><Esc>A<Space><C-X>><Esc>F<NL>s
     let b:surround_35 = maparg("<C-X><Lt>","i")."' \r ".maparg("<C-X>>","i")
-  elseif &ft == "jsp"
+  elseif IsInList("jsp", filetypes)
     inoremap <buffer> <C-X>'     <Lt>%--<Space><Space>--%><Esc>4hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<%--<Space><Esc>A<Space>--%><Esc>F<NL>s
     let b:surround_35 = "<%-- \r --%>"
-  elseif &ft == "cf"
+  elseif IsInList("cf", filetypes)
     inoremap <buffer> <C-X>'     <Lt>!---<Space><Space>---><Esc>4hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!---<Space><Esc>A<Space>---><Esc>F<NL>s
     setlocal commentstring=<!---%s--->
     let b:surround_35 = "<!--- \r --->"
-  elseif &ft == "html" || &ft == "xml" || &ft == "xhtml"
+  elseif IsInList("html", filetypes) || IsInList("xml", filetypes) || IsInList("xhtml", filetypes)
     inoremap <buffer> <C-X>'     <Lt>!--<Space><Space>--><Esc>3hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!--<Space><Esc>A<Space>--><Esc>F<NL>s
     let b:surround_35 = "<!-- \r -->"
-  elseif &ft == "django" || &ft == "htmldjango" || &ft == 'htmljinja'
+  elseif IsInList("django", filetypes) || IsInList("htmldjango", filetypes) || IsInList('htmljinja', filetypes)
     inoremap <buffer> <C-X>'     {#<Space><Space>#}<Esc>2hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{#<Space><Esc>A<Space>#}<Esc>F<NL>s
     let b:surround_35 = "{# \r #}"
-  elseif &ft == "liquid"
+  elseif IsInList("liquid", filetypes)
     inoremap <buffer> <C-X>'     {%<Space>comment<Space>%}{%<Space>endcomment<Space>%}<Esc>15hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{%<Space>comment<Space>%}<Esc>A{%<Space>endcomment<Space>%}<Esc>F<NL>s
     let b:surround_35 = "{% comment %}\r{% endcomment %}"
-  elseif &ft =~ '\<smarty\>'
+  elseif IsInList('\<smarty\>', filetypes)
     inoremap <buffer> <C-X>'     {*<Space><Space>*}<Esc>2hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{*<Space><Esc>A<Space>*}<Esc>F<NL>s
     let b:surround_35 = "{* \r *}"
@@ -226,11 +231,12 @@ endfunction
 
 function! s:doctypeSeek()
   if !exists("b:ragtag_doctype_index")
+    let filetypes = split(&ft,'\.')
     if exists("b:allml_doctype_index")
       let b:ragtag_doctype_index = b:allml_doctype_index
-    elseif &ft == 'xhtml' || &ft =~ '\<eruby\>'
+    elseif IsInList('xhtml', filetypes) || IsInList('\<eruby\>', filetypes)
       let b:ragtag_doctype_index = 10
-    elseif &ft != 'xml'
+    elseif !IsInList('xml', filetypes)
       let b:ragtag_doctype_index = 7
     endif
   endif
