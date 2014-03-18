@@ -8,6 +8,19 @@ if exists("g:loaded_ragtag") || &cp
 endif
 let g:loaded_ragtag = 1
 
+if !exists('g:html_indent_inctags')
+  let g:html_indent_inctags = 'body,head,html,tbody,p,li,dt,dd'
+endif
+if !exists('g:html_indent_autotags')
+  let g:html_indent_autotags = 'wbr'
+endif
+if !exists('g:html_indent_script1')
+  let g:html_indent_script1 = 'inc'
+endif
+if !exists('g:html_indent_style1')
+  let g:html_indent_style1 = 'inc'
+endif
+
 if has("autocmd")
   augroup ragtag
     autocmd!
