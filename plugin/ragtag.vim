@@ -24,9 +24,9 @@ endif
 if has("autocmd")
   augroup ragtag
     autocmd!
-    autocmd FileType *html*,wml,jsp,mustache,smarty call s:Init()
-    autocmd FileType php,asp*,cf,mason,eruby,liquid call s:Init()
-    autocmd FileType xml,xslt,xsd,docbk,jst         call s:Init()
+    autocmd FileType *html*,wml,jsp,gsp,mustache,smarty call s:Init()
+    autocmd FileType php,asp*,cf,mason,eruby,liquid,jst call s:Init()
+    autocmd FileType xml,xslt,xsd,docbk                 call s:Init()
     if version >= 700
       autocmd InsertLeave * call s:Leave()
     endif
@@ -168,7 +168,7 @@ function! s:Init()
     imap <buffer> <C-X>' <C-X><Lt>'<Space><Space><C-X>><Esc>2hi
     imap <buffer> <C-X>" <C-V><NL><Esc>I<C-X><Lt>'<Space><Esc>A<Space><C-X>><Esc>F<NL>s
     let b:surround_35 = maparg("<C-X><Lt>","i")."' \r ".maparg("<C-X>>","i")
-  elseif &ft == "jsp"
+  elseif &ft ==# 'jsp' || &filetype ==# 'gsp'
     inoremap <buffer> <C-X>'     <Lt>%--<Space><Space>--%><Esc>4hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<%--<Space><Esc>A<Space>--%><Esc>F<NL>s
     let b:surround_35 = "<%-- \r --%>"
