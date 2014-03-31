@@ -3,7 +3,7 @@
 " Version:      2.0
 " GetLatestVimScripts: 1896 1 :AutoInstall: ragtag.vim
 
-if exists("g:loaded_ragtag") || &cp
+if exists("g:loaded_ragtag") || &cp || v:version < 700
   finish
 endif
 let g:loaded_ragtag = 1
@@ -21,18 +21,14 @@ if !exists('g:html_indent_style1')
   let g:html_indent_style1 = 'inc'
 endif
 
-if has("autocmd")
-  augroup ragtag
-    autocmd!
-    autocmd FileType *html*,wml,jsp,gsp,mustache,smarty call s:Init()
-    autocmd FileType php,asp*,cf,mason,eruby,liquid,jst call s:Init()
-    autocmd FileType xml,xslt,xsd,docbk                 call s:Init()
-    if version >= 700
-      autocmd InsertLeave * call s:Leave()
-    endif
-    autocmd CursorHold * if exists("b:loaded_ragtag") | call s:Leave() | endif
-  augroup END
-endif
+augroup ragtag
+  autocmd!
+  autocmd FileType *html*,wml,jsp,gsp,mustache,smarty call s:Init()
+  autocmd FileType php,asp*,cf,mason,eruby,liquid,jst call s:Init()
+  autocmd FileType xml,xslt,xsd,docbk                 call s:Init()
+  autocmd InsertLeave * call s:Leave()
+  autocmd CursorHold * if exists("b:loaded_ragtag") | call s:Leave() | endif
+augroup END
 
 inoremap <silent> <Plug>ragtagHtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
 
