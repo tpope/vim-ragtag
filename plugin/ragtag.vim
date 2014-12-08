@@ -67,7 +67,7 @@ function! s:Init()
   inoremap <silent> <buffer> <C-X><Space> <Esc>ciW<Lt><C-R>"<C-R>=<SID>tagextras()<CR>></<C-R>"><Esc>F<i
   inoremap <silent> <buffer> <C-X><CR> <Esc>ciW<Lt><C-R>"<C-R>=<SID>tagextras()<CR>><CR></<C-R>"><Esc>O
   if exists("&omnifunc")
-    inoremap <silent> <buffer> <C-X>/ <Lt>/<C-R>=<SID>htmlEn()<CR><C-X><C-O><C-R>=<SID>htmlDis()<CR><C-F>
+    inoremap <silent> <buffer> <C-X>/ <Lt>/<C-R>=<SID>htmlEn()<CR><C-X><C-O><C-R>=<SID>htmlDis()<CR><C-R>=<SID>reindent()<CR>
     if exists(":XMLns")
       XMLns xhtml10s
     endif
@@ -234,6 +234,13 @@ function! s:repeat(str,cnt)
   endwhile
   return str
 endfunction
+
+function! s:reindent()
+  if (len(&indentexpr) || &cindent)
+    return "\<C-F>"
+  endif
+  return ""
+endfun
 
 function! s:doctypeSeek()
   if !exists("b:ragtag_doctype_index")
