@@ -100,7 +100,7 @@ function! s:Init()
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{{ \r }}"
     let b:surround_61 = "{{ \r }}"
-  elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja'
+  elseif &ft =~ "django" || &ft == "liquid" || &ft == 'htmljinja' || &ft == 'html.twig'
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
     inoremap <buffer> <C-X><Lt> {%
