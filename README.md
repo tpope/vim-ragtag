@@ -43,9 +43,9 @@ However, if you wish to create open/close tag pair separated by a newline, type 
 
 Here is an example, if you just typed div and then press `CTRL+X ENTER` it will produce the following output:
 
-`<div>`   
-`|`   
-`</div>`    
+`<div>`
+`|`
+`</div>`
 `|` indicates the position of cursor.
 
 ###Insert HTML doctype.
@@ -85,7 +85,7 @@ There are several different mappings for wrapping text in template tags. It's be
 `CTRL+X -   foo<% | %>`   
 `CTRL+X _   <% foo| %>`   
 `CTRL+X '   foo<%# | %>`   
-`CTRL+X "   <%# foo| %>`    
+`CTRL+X "   <%# foo| %>`   
 What this table shows us is, for example, that if you have typed "foo" and press `CTRL+X _`, the plugin will wrap "foo" in `<% %>` tags and place the cursor after "foo".
 
 ###Summary of all the RagTag mappings.
@@ -112,9 +112,9 @@ you have typed "foo".
 
 ## Self-Promotion
 
-Like dispatch.vim?  Follow the repository on
-[GitHub](https://github.com/tpope/vim-dispatch) and vote for it on
-[vim.org](http://www.vim.org/scripts/script.php?script_id=4504).  And if
+Like ragtag.vim?  Follow the repository on
+[GitHub](https://github.com/tpope/vim-ragtag) and vote for it on
+[vim.org](http://www.vim.org/scripts/script.php?script_id=1896).  And if
 you're feeling especially charitable, follow [tpope](http://tpo.pe/) on
 [Twitter](http://twitter.com/tpope) and
 [GitHub](https://github.com/tpope).
