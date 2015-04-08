@@ -43,9 +43,9 @@ However, if you wish to create open/close tag pair separated by a newline, type 
 
 Here is an example, if you just typed div and then press `CTRL+X ENTER` it will produce the following output:
 
-`<div>`
-`|`
-`</div>`
+`<div>`   
+`|`   
+`</div>`   
 `|` indicates the position of cursor.
 
 ###Insert HTML doctype.
