@@ -23,8 +23,6 @@ endif
 
 augroup ragtag
   autocmd!
-  autocmd BufReadPost * if ! did_filetype() && getline(1)." ".getline(2).
-        \ " ".getline(3) =~? '<\%(!DOCTYPE \)\=html\>' | setf html | endif
   autocmd FileType *html*,wml,jsp,gsp,mustache,smarty         call s:Init()
   autocmd FileType php,asp*,cf,mason,eruby,liquid,jst,eelixir call s:Init()
   autocmd FileType xml,xslt,xsd,docbk                         call s:Init()
