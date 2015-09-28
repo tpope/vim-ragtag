@@ -78,8 +78,8 @@ function! s:Init()
   else
     inoremap <silent> <buffer> <C-X>/ <Lt>/><Left>
   endif
-  let g:surround_{char2nr("p")} = "<p>\n\t\r\n</p>"
-  let g:surround_{char2nr("d")} = "<div\1div: \r^[^ ]\r &\1>\n\t\r\n</div>"
+  let b:surround_{char2nr("p")} = "<p>\n\t\r\n</p>"
+  let b:surround_{char2nr("d")} = "<div\1div: \r^[^ ]\r &\1>\n\t\r\n</div>"
   imap <buffer> <C-X><C-_> <C-X>/
   imap <buffer> <SID>ragtagOopen    <C-X><Lt><Space>
   imap <buffer> <SID>ragtagOclose   <Space><C-X>><Left><Left>
