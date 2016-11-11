@@ -28,7 +28,7 @@ augroup ragtag
   autocmd FileType *html*,wml,jsp,gsp,mustache,smarty         call s:Init()
   autocmd FileType php,asp*,cf,mason,eruby,liquid,jst,eelixir call s:Init()
   autocmd FileType xml,xslt,xsd,docbk                         call s:Init()
-  autocmd FileType javascript.jsx,jsx                         call s:Init()
+  autocmd FileType javascript.jsx,jsx,handlebars              call s:Init()
   autocmd InsertLeave * call s:Leave()
   autocmd CursorHold * if exists("b:loaded_ragtag") | call s:Leave() | endif
 augroup END
@@ -133,6 +133,13 @@ function! s:Init()
     inoremap <buffer> <C-X>>    }
     let b:surround_45 = "{\r}"
     let b:surround_61 = "{\r}"
+  elseif s:isFiletype('handlebars')
+    inoremap <buffer> <SID>ragtagOopen    {{
+    inoremap <buffer> <SID>ragtagOclose   }}
+    inoremap <buffer> <C-X><Lt> {{
+    inoremap <buffer> <C-X>>    }}
+    let b:surround_45 = "{{\r}}"
+    let b:surround_61 = "{{\r}}"
   else
     inoremap <buffer> <SID>ragtagOopen    <%=<Space>
     inoremap <buffer> <C-X><Lt> <%
@@ -196,6 +203,11 @@ function! s:Init()
     inoremap <buffer> <C-X>'     {*<Space><Space>*}<Esc>2hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{*<Space><Esc>A<Space>*}<Esc>F<NL>s
     let b:surround_35 = "{* \r *}"
+  elseif s:isFiletype('handlebars')
+    imap <script> <buffer> <C-X>= <SID>ragtagOopen<SID>ragtagOclose<Left><Left>
+    inoremap  <buffer> <C-X>_ <Esc>ciW{{#<C-R>"}}<CR>{{/<C-R>"}}<Esc>khi
+    inoremap  <buffer> <C-X>' {{!}}<Esc>hi
+    inoremap  <buffer> <C-X>" <C-V><NL><Esc>I{{!<Esc>A}}<Esc>F<NL>s
   else
     imap <buffer> <C-X>' <C-X><Lt>#<Space><Space><C-X>><Esc>2hi
     imap <buffer> <C-X>" <C-V><NL><Esc>I<C-X><Lt>#<Space><Esc>A<Space><C-X>><Esc>F<NL>s
