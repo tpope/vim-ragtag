@@ -50,19 +50,13 @@ endfunction
 
 function! s:Init()
   let b:loaded_ragtag = 1
-  inoremap <silent> <buffer> <SID>xmlversion  <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
-  inoremap      <buffer> <SID>html5       <!DOCTYPE html>
-  inoremap      <buffer> <SID>xhtmltrans  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   if s:subtype() == "xml"
-    imap <script> <buffer> <SID>doctype <SID>xmlversion
-  elseif exists("+omnifunc")
-    inoremap <silent> <buffer> <SID>doctype  <C-R>=<SID>htmlEn()<CR><!DOCTYPE<C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N><C-R>=<SID>doctypeSeek()<CR>
+    imap <script> <buffer> <C-X>! <?xml version="1.0" encoding="<C-R>=toupper(<SID>charset())<CR>"?>
   elseif s:subtype() == "xhtml"
-    imap <script> <buffer> <SID>doctype <SID>xhtmltrans
+    imap <script> <buffer> <C-X>! <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   else
-    imap <script> <buffer> <SID>doctype <SID>html5
+    imap <script> <buffer> <C-X>! <!DOCTYPE html>
   endif
-  imap <script> <buffer> <C-X>! <SID>doctype
 
   imap <silent> <buffer> <C-X># <C-R>=<SID>charsetTag()<CR>
   inoremap <silent> <buffer> <SID>HtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
