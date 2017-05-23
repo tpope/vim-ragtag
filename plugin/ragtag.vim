@@ -134,6 +134,12 @@ function! s:Init()
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{{\r}}"
     let b:surround_61 = "{{\r}}"
+  elseif s:isFiletype('html')
+    inoremap <buffer> <SID>ragtagOopen    <!--#echo var=
+    inoremap <buffer> <C-X><Lt> <!--#
+    inoremap <buffer> <C-X>>    -->
+    let b:surround_45 = "<!--#\r -->"
+    let b:surround_61 = "<!--#echo var=\r -->"
   else
     inoremap <buffer> <SID>ragtagOopen    <%=<Space>
     inoremap <buffer> <C-X><Lt> <%
