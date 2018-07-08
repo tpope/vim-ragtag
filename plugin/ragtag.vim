@@ -259,20 +259,6 @@ function! s:reindent()
   return ""
 endfun
 
-function! s:doctypeSeek()
-  if !exists("b:ragtag_doctype_index")
-    if exists("b:allml_doctype_index")
-      let b:ragtag_doctype_index = b:allml_doctype_index
-    elseif s:isFiletype('xhtml') || s:isFiletype('eruby')
-      let b:ragtag_doctype_index = 10
-    elseif !s:isFiletype('xml')
-      let b:ragtag_doctype_index = 7
-    endif
-  endif
-  let index = b:ragtag_doctype_index - 1
-  return (index < 0 ? s:repeat("\<C-P>",-index) : s:repeat("\<C-N>",index))
-endfunction
-
 function! s:stylesheetType()
   if s:subtype() == 'html5'
     return ''
