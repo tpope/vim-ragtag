@@ -60,7 +60,7 @@ function! s:Init()
 
   if empty(&l:define)
     let &l:define = '\<id=["'']\='
-    let b:undo_ftplugin = get(b:undo_ftplugin, 'exe') . '|setl def='
+    let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe') . '|setl def='
   endif
 
   imap <silent> <buffer> <C-X># <C-R>=<SID>charsetTag()<CR>
