@@ -58,6 +58,11 @@ function! s:Init()
     imap <script> <buffer> <C-X>! <!DOCTYPE html>
   endif
 
+  if empty(&l:define)
+    let &l:define = '\<id=["'']\='
+    let b:undo_ftplugin = get(b:undo_ftplugin, 'exe') . '|setl def='
+  endif
+
   imap <silent> <buffer> <C-X># <C-R>=<SID>charsetTag()<CR>
   inoremap <silent> <buffer> <SID>HtmlComplete <C-R>=<SID>htmlEn()<CR><C-X><C-O><C-P><C-R>=<SID>htmlDis()<CR><C-N>
   imap     <buffer> <C-X>H <SID>HtmlComplete
