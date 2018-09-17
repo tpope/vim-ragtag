@@ -332,7 +332,7 @@ function! s:htmlDis()
     let &l:isk = b:ragtag_isk
     unlet b:ragtag_isk
   endif
-  if exists("b:completeopt")
+  if exists("b:ragtag_completeopt")
     let &l:completeopt = b:ragtag_completeopt
     unlet b:ragtag_completeopt
   endif
