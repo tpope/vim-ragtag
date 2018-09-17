@@ -317,8 +317,9 @@ endfunction
 function! s:htmlEn()
   let b:ragtag_omni = &l:omnifunc
   let b:ragtag_isk = &l:isk
+  let b:ragtag_completeopt = &l:completeopt
   " : is for namespaced xml attributes
-  setlocal omnifunc=htmlcomplete#CompleteTags isk+=:
+  setlocal omnifunc=htmlcomplete#CompleteTags isk+=: completeopt=
   return ""
 endfunction
 
@@ -330,6 +331,10 @@ function! s:htmlDis()
   if exists("b:ragtag_isk")
     let &l:isk = b:ragtag_isk
     unlet b:ragtag_isk
+  endif
+  if exists("b:ragtag_completeopt")
+    let &l:completeopt = b:ragtag_completeopt
+    unlet b:ragtag_completeopt
   endif
   return ""
 endfunction
