@@ -105,7 +105,7 @@ function! s:Init()
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{{ \r }}"
     let b:surround_61 = "{{ \r }}"
-  elseif s:isFiletype('django') || s:isFiletype('htmldjango') || s:isFiletype('liquid') || s:isFiletype('htmljinja')
+  elseif s:isFiletype('django') || s:isFiletype('htmldjango') || s:isFiletype('liquid') || s:isFiletype('htmljinja') || s:isFiletype('jinja')
     inoremap <buffer> <SID>ragtagOopen    {{<Space>
     inoremap <buffer> <SID>ragtagOclose   <Space>}}<Left><Left>
     inoremap <buffer> <C-X><Lt> {%
@@ -197,7 +197,7 @@ function! s:Init()
     inoremap <buffer> <C-X>'     <Lt>!--<Space><Space>--><Esc>3hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!--<Space><Esc>A<Space>--><Esc>F<NL>s
     let b:surround_35 = "<!-- \r -->"
-  elseif s:isFiletype('django') || s:isFiletype('htmldjango') || s:isFiletype('htmljinja')
+  elseif s:isFiletype('django') || s:isFiletype('htmldjango') || s:isFiletype('htmljinja') || s:isFiletype('jinja')
     inoremap <buffer> <C-X>'     {#<Space><Space>#}<Esc>2hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<C-X>{#<Space><Esc>A<Space>#}<Esc>F<NL>s
     let b:surround_35 = "{# \r #}"
