@@ -30,6 +30,8 @@ augroup ragtag
   autocmd FileType xml,xslt,xsd,docbk                         call s:Init()
   autocmd FileType javascript.jsx,jsx,handlebars              call s:Init()
   autocmd FileType typescript.tsx                             call s:Init()
+  autocmd FileType javascript.jsx,jsx,javascriptreact,handlebars  call s:Init()
+  autocmd FileType typescript.tsx,tsx,typescriptreact             call s:Init()
   autocmd InsertLeave * call s:Leave()
   autocmd CursorHold * if exists("b:loaded_ragtag") | call s:Leave() | endif
 augroup END
