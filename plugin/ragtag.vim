@@ -140,7 +140,7 @@ function! s:Init()
     inoremap <buffer> <C-X>>    }}
     let b:surround_45 = "{{\r}}"
     let b:surround_61 = "{{\r}}"
-  elseif s:isFiletype('html')
+  elseif &filetype ==# 'html'
     inoremap <buffer> <SID>ragtagOopen    <!--#echo var=
     inoremap <buffer> <C-X><Lt> <!--#
     inoremap <buffer> <C-X>>    -->
@@ -160,7 +160,7 @@ function! s:Init()
     inoremap <buffer> <C-X>] <cfscript><CR></cfscript><Esc>O
   elseif s:isFiletype('mason')
     inoremap <buffer> <C-X>] <%perl><CR></%perl><Esc>O
-  elseif s:isFiletype('html') || s:isFiletype('xhtml') || s:isFiletype('xml')
+  elseif &filetype ==# 'html' || &filetype ==# 'xml' || &filetype ==# 'xhtml'
     imap     <buffer> <C-X>] <script<C-R>=<SID>javascriptType()<CR>><CR></script><Esc>O
   else
     imap     <buffer> <C-X>] <C-X><Lt><CR><C-X>><Esc>O
@@ -193,7 +193,7 @@ function! s:Init()
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!---<Space><Esc>A<Space>---><Esc>F<NL>s
     setlocal commentstring=<!---%s--->
     let b:surround_35 = "<!--- \r --->"
-  elseif s:isFiletype('html') || s:isFiletype('xml') || s:isFiletype('xhtml')
+  elseif &filetype ==# 'html' || &filetype ==# 'xml' || &filetype ==# 'xhtml'
     inoremap <buffer> <C-X>'     <Lt>!--<Space><Space>--><Esc>3hi
     inoremap <buffer> <C-X>"     <C-V><NL><Esc>I<!--<Space><Esc>A<Space>--><Esc>F<NL>s
     let b:surround_35 = "<!-- \r -->"
