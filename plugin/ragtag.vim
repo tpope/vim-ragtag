@@ -28,6 +28,7 @@ augroup ragtag
   autocmd FileType *html*,wml,jsp,gsp,mustache,smarty             call s:Init()
   autocmd FileType php,asp*,cf,mason,eruby,liquid,jst,eelixir     call s:Init()
   autocmd FileType xml,xslt,xsd,docbk                             call s:Init()
+  autocmd FileType vue                                            call s:Init()
   autocmd FileType javascript.jsx,jsx,javascriptreact,handlebars  call s:Init()
   autocmd FileType typescript.tsx,tsx,typescriptreact             call s:Init()
   autocmd InsertLeave * call s:Leave()
