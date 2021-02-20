@@ -90,7 +90,7 @@ function! s:Init()
     inoremap <buffer> <C-X>>    ?>
     inoremap <buffer> <SID>ragtagOopen    <?php<Space>echo<Space>
     let b:surround_45 = "<?php \r ?>"
-    let b:surround_61 = "<?php echo \r ?>"
+    let b:surround_61 = "<?= \r ?>"
   elseif s:isFiletype('htmltt') || s:isFiletype('tt2html')
     inoremap <buffer> <C-X><Lt> [%
     inoremap <buffer> <C-X>>    %]
