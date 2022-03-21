@@ -562,7 +562,7 @@ inoremap <silent> <Plug>ragtagXmlEncode <C-R>=<SID>togglexmlescape()<CR>
 inoremap <silent> <Plug>ragtagUrlV      <C-R>=<SID>urlv()<CR>
 inoremap <silent> <Plug>ragtagXmlV      <C-R>="&#".getchar().";"<CR>
 
-if exists("g:ragtag_global_maps")
+if get(g:, "ragtag_global_maps", 0)
   imap     <C-X>H      <Plug>ragtagHtmlComplete
   imap     <C-X>/    </<Plug>ragtagHtmlComplete
   imap     <C-X>%      <Plug>ragtagUrlEncode
